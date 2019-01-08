@@ -80,7 +80,7 @@ function createFormField(text, element) {
     //input.onchange = function () {
     sessionStorage[text] = e.target.value;
     console.log("FormField: " + text + " : " + sessionStorage[text]);
-    console.log("FormField: " + text + " : " + e.target.value);
+    //console.log("FormField: " + text + " : " + e.target.value);
     //}
   });
 }

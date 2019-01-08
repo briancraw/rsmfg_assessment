@@ -11,14 +11,14 @@ const responseRegExp = /(?<cmd>\w+): (?<resp>.*)/;
 var scores = {
   a1 : {
     total : 0.0,
-    tableScore : 0.0,
-    tableTime : 0.0,
-    questionsScore : 0.0,
-    a1BOMScore : 0.0,
-    a1a1MeasurementScore : 0.0,
-    questionsTime : 0.0,
+    tableScore : 0,
+    tableTime : 0,
+    questionsScore : 0,
+    a1BOMScore : 0,
+    a1a1MeasurementScore : 0,
+    questionsTime : 0,
     a1a : {
-      tableScore : 0.0,
+      tableScore : 0,
       tableTime : 0
     },
     a1b : {
@@ -28,17 +28,17 @@ var scores = {
   },
   a2 : {
     total : 0.0,
-    tableScore : 0.0,
-    tableTime : 0.0,
-    questionsScore : 0.0,
-    questionsTime : 0.0,
+    tableScore : 0,
+    tableTime : 0,
+    questionsScore : 0,
+    questionsTime : 0,
   },
   a3 : {
     total : 0.0,
-    tableScore : 0.0,
-    tableTime : 0.0,
-    questionsScore : 0.0,
-    questionsTime : 0.0,
+    tableScore : 0,
+    tableTime : 0,
+    questionsScore : 0,
+    questionsTime : 0,
   }
 } // scores
 
@@ -55,7 +55,6 @@ function processState(data) {
 
   switch (currentState) {
     case STATES.IDLE:
-      //currentState = processIdleState(d, currentState);
       if (d == CMDS.SA1A) {
         console.log("HERE0");
         clearResults(scores);
@@ -78,14 +77,13 @@ function processState(data) {
         if (NO_TABLE) {
           processState("SA1A: 75.0");
         }
-      //  createCountdownTimer(A1_TIMER);
-      //  document.getElementById('clockdivclone').style.display = "none";
       } else if ((match = responseRegExp.exec(d)) && match.groups.cmd == CMDS.SA1A) {
         captureTime(ASSESSMENTS.A1A);
-        //calculateScore(ASSESSMENTS.A1A, match.groups.resp);
-        scores.a1.a1a.tableScore = parseFloat(match.groups.resp);
+        scores.a1.a1a.tableScore = parseInt(match.groups.resp);
+        //scores.a1.a1a.tableScore = match.groups.resp;
         currentState = STATES.A1B_ACTIVE;
-        console.log("HERE1 " + scores.a1.a1a.tableScore);
+        console.log("SA1A: A1A TABLE SCORE " + scores.a1.a1a.tableScore);
+        startTableAssessment1B();
         sendSerial(CMDS.SA1B);
         //startTableAssessment1A();
       } else if ((match = responseRegExp.exec(d)) && match.groups.cmd == CMDS.ST1A) {
@@ -93,12 +91,10 @@ function processState(data) {
         // and move on to A2
         captureTime(ASSESSMENTS.A1A);
         captureTime(ASSESSMENTS.A1B);
-        scores.a1.a1a.tableScore = parseFloat(match.groups.resp);
+        scores.a1.a1a.tableScore = parseInt(match.groups.resp);
+        //scores.a1.a1a.tableScore = match.groups.resp;
         scores.a1.a1b.tableScore = 0;
-        console.log("HERE2 " + scores.a1.a1a.tableScore);
-        //calculateScore(ASSESSMENTS.A1A, match.groups.resp);
-        //calculateScore(ASSESSMENTS.A1B, 0);
-        //calculateScore(ASSESSMENTS.A1);
+        console.log("ST1A: A1A TABLE SCORE " + scores.a1.a1a.tableScore);
         currentState = STATES.A2_ACTIVE;
         sendSerial(CMDS.SA2);
       }
@@ -113,68 +109,42 @@ function processState(data) {
         clearInterval(timeinterval);
         captureTime(ASSESSMENTS.A1B);
         captureTime(ASSESSMENTS.A1);
-        scores.a1.a1b.tableScore = parseFloat(match.groups.resp);
-        console.log("HERE3 " + scores.a1.a1b.tableScore);
-
-        //calculateScore(ASSESSMENTS.A1B, match.groups.resp);
-        //calculateScore(ASSESSMENTS.A1);
+        scores.a1.a1b.tableScore = parseInt(match.groups.resp);
+        //scores.a1.a1b.tableScore = match.groups.resp;
+        console.log("SA1B: A1B TABLE SCORE " + scores.a1.a1b.tableScore);
         currentState = STATES.A2_ACTIVE;
         startAssessment2();
-//        processState(CMDS.SA2);
-//        assessment1Questions();
-//} else if (d == "A1Q_DONE") {
-  //      clearInterval(timeinterval);
-  //      captureTime(ASSESSMENTS.A1);
-  //      // calculate A1B and total A1 scores
-  //      //calculateScore(ASSESSMENTS.A1B;
-  //      //calculateScore(ASSESSMENTS.A1);
-  //      currentState = STATES.A2_ACTIVE;
-  //      sendSerial(CMDS.SA2);
       } else if ((match = responseRegExp.exec(d)) && match.groups.cmd == CMDS.ST1B) {
-        console.log("HERE4");
         captureTime(ASSESSMENTS.A1B);
         captureTime(ASSESSMENTS.A1);
-        scores.a1.a1b.tableScore = parseFloat(match.groups.resp);
-        //calculateScore(ASSESSMENTS.A1B, match.groups.resp);
-        //calculateScore(ASSESSMENTS.A1);
+        scores.a1.a1b.tableScore = parseInt(match.groups.resp);
+//        scores.a1.a1b.tableScore = match.groups.resp;
+        console.log("ST1B: A1B TABLE SCORE " + scores.a1.a1b.tableScore);
         currentState = STATES.A2_ACTIVE;
         startAssessment2();
-//      sendSerial(CMDS.SA2);
       }
       break;
     case STATES.A2_ACTIVE:
       if (d == CMDS.SA2) {
-  //      startAssessment2();
-        //createCountdownTimer(A2_TIMER);
-        //createCountdownTimer(1500);
         if (NO_TABLE) {
           processState("SA2: 100.00");
         }
       } else if ((match = responseRegExp.exec(d)) && match.groups.cmd == CMDS.SA2) {
-        console.log("HERE5");
         clearInterval(timeinterval);
         // process Assessment 2 questions then stop the timer
         captureTime(ASSESSMENTS.A2);
-        scores.a2.tableScore = parseFloat(match.groups.resp);
+        scores.a2.tableScore = parseInt(match.groups.resp);
+        //scores.a2.tableScore = match.groups.resp;
+        console.log("SA2: A2 TABLE SCORE " + scores.a2.tableScore);
         //calculateScore(ASSESSMENTS.A2, match.groups.resp);
         currentState = STATES.A3_ACTIVE;
         startAssessment3();
-//        assessment2Questions();
-//} else if (d == "A2Q_DONE") {
-  //      // calculate total A2 scores
-  //      clearInterval(timeinterval);
-  //      captureTime(ASSESSMENTS.A2);
-  //      // calc total A2 score
-  //  //    calculateScore(ASSESSMENTS.A2, match.groups.resp);
-  //      currentState = STATES.A3_ACTIVE;
-  //      sendSerial(CMDS.SA3);
       } else if ((match = responseRegExp.exec(d)) && match.groups.cmd == CMDS.ST2) {
-        console.log("HERE5.5");
         captureTime(ASSESSMENTS.A2);
-        scores.a2.tableScore = parseFloat(match.groups.resp);
-        //calculateScore(ASSESSMENTS.A2, match.groups.resp);
+        scores.a2.tableScore = parseInt(match.groups.resp);
+//        scores.a2.tableScore = match.groups.resp;
+        console.log("ST2: A2 TABLE SCORE " + scores.a2.tableScore);
         currentState = STATES.A3_ACTIVE;
-//        sendSerial(CMDS.SA3);
         startAssessment3();
       }
       break;
@@ -186,12 +156,11 @@ function processState(data) {
           processState("SA3: 80.01");
         }
       } else if ((match = responseRegExp.exec(d)) && match.groups.cmd == CMDS.SA3) {
-        console.log("HERE6");
         clearInterval(timeinterval);
         captureTime(ASSESSMENTS.A3);
-        scores.a3.tableScore = parseFloat(match.groups.resp);
-        //calculateScore(ASSESSMENTS.A3, match.groups.resp);
-        // send results to server
+        scores.a3.tableScore = parseInt(match.groups.resp);
+//        scores.a3.tableScore = match.groups.resp;
+        console.log("SA3: A3 TABLE SCORE " + scores.a3.tableScore);
         assessmentsComplete();
         currentState = STATES.COMPLETE;
         if (NO_TABLE) {
@@ -203,7 +172,9 @@ function processState(data) {
         console.log("HERE6.5");
         captureTime(ASSESSMENTS.A3);
         // calc total A3 score
-        scores.a3.tableScore = parseFloat(match.groups.resp);
+        scores.a3.tableScore = parseInt(match.groups.resp);
+//        scores.a3.tableScore = match.groups.resp;
+        console.log("ST3: A3 TABLE SCORE " + scores.a3.tableScore);
         //calculateScore(ASSESSMENTS.A3);
         assessmentsComplete();
         currentState = STATES.COMPLETE;

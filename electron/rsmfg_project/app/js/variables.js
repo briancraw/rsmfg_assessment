@@ -57,11 +57,11 @@ var remainingTime = {
   'seconds': 0
 };
 var waiting = true;
-var firstName = "First Name";
-var lastName = "Last Name";
-var ssn = "Last 4 digits of SSN";
-var date = "Date (MM/DD/YYYY)";
-var employeeNum = "Employee Number";
+var firstName = 'First Name';
+var lastName = 'Last Name';
+var ssn = 'Last 4 digits of SSN';
+var date = 'Date (MM/DD/YYYY)';
+var employeeNum = 'Employee Number';
 
 sessionStorage[firstName] = "";
 sessionStorage[lastName] = "";
@@ -70,26 +70,36 @@ sessionStorage[date] = "";
 sessionStorage[employeeNum] = "";
 
 sessionStorage["BOM"] = "";
-sessionStorage["depth"] = "";
-sessionStorage["depth_fractions"] = "";
 sessionStorage["len"] = "";
 sessionStorage["len_fraction"] = "";
-sessionStorage["width"] = "";
-sessionStorage["width_fractions"] = "";
-bomAnswer = "4.91";
-depthAnswer = "2";
-depth_fractionsAnswer = "3/4";
-lenAnswer = "6";
-len_fractionsAnswer = "";
-widthAnswer = "3"
-width_fractionsAnswer = "";
+sessionStorage["width1"] = "";
+sessionStorage["width1_fractions"] = "";
+sessionStorage["width2"] = "";
+sessionStorage["width2_fractions"] = "";
+
+const bomAnswer = "4.91";
+const width1Answer = "2";
+const width1_fractionsAnswer = "1/2";
+const width2Answer = "2"
+const width2_fractionsAnswer = "1/4";
+const lenAnswer = "6";
+const len_fractionsAnswer = "";
 
 sessionStorage["leftPocketCount"] = "";
 sessionStorage["centerPocketCount"] = "";
 sessionStorage["rightPocketCount"] = "";
-leftPocketCountAnswer = "7";
-centerPocketCountAnswer = "3";
-rightPocketCountAnswer = "2";
+const leftPocketCountAnswer = "7";
+const centerPocketCountAnswer = "3";
+const rightPocketCountAnswer = "2";
+
+const A1A_TOTAL_AVAIL_PTS = 8;
+const A1B_TOTAL_AVAIL_PTS = 7;
+const A1_TOTAL_ASSESS_PTS = 15;
+const A1_TOTAL_TIME_PTS = 5;
+const A2_TOTAL_ASSESS_PTS = 10;
+const A2_TOTAL_TIME_PTS  = 3.33;
+const A3_TOTAL_ASSESS_PTS = 9;
+const A3_TOTAL_TIME_PTS = 3;
 
 var topHeading = document.getElementById("top-heading");
 var infoHeading = document.getElementById("info-heading");

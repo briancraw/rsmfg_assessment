@@ -4,14 +4,16 @@
 function startAssessment3() {
   resetWCAll();
 
-//  let t = createElementAndText("P", "Assessment Test #2 in Progress...", "instruction-text", infoHeading);
-//  t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
-createCountdownTimer(A3_TIMER);
+  //  let t = createElementAndText("P", "Assessment Test #2 in Progress...", "instruction-text", infoHeading);
+  //  t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
+  createCountdownTimer(A3_TIMER);
+  infoHeading.appendChild(document.createElement("HR"));
 
-  let t = createElementAndText("P", "Open the packet labeled \"Work Instruction Assessment 3\" located above the Assessment Table and click NEXT to continue.",
+  let t = createElementAndText("P", "Open the packet labeled \"Work Instruction Assessment 3\" \
+                                     located above the Assessment Table and  and follow the given instructions.",
                            "instruction-text", preformContent);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
-  infoHeading.appendChild(document.createElement("HR"));
+  //infoHeading.appendChild(document.createElement("HR"));
 
   //createButton("startTableAssessment3()", "NEXT", wc);
   startTableAssessment3();

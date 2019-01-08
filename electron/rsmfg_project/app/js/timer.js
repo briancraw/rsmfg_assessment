@@ -24,7 +24,7 @@ function createCountdownTimer(timeoutInMilliseconds) {
     footer.appendChild(clockDiv);
     clockDivClone = clockDiv.cloneNode(true);
     clockDivClone.id = 'clockdivclone';
-    infoHeading.appendChild(clockDivClone);
+    topHeading.appendChild(clockDivClone);
   }
 
   remainingTime.total = 0;
