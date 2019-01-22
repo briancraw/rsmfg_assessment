@@ -33,11 +33,11 @@ function assessment1StartPage() {
   createButton("startAssessment1()", "START", wc);
 } // assessment1StartPage
 
-
 function startAssessment1() {
   resetWCAll();
 
   createCountdownTimer(A1_TIMER);
+  processState(CMDS.SA1A);
 
   let t = createElementAndText("P", "Open the packet labeled \"Work Instruction Assessment 1\" \
                                  located above the Assessment Table and follow the given instructions.",
@@ -45,16 +45,11 @@ function startAssessment1() {
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
   infoHeading.appendChild(document.createElement("HR"));
 
-  //createButton("assessment1Questions()", "NEXT", wc);
   assessment1Questions();
 } // startAssessment1
 
-
 function assessment1Questions() {
   resetWC();
-  //preformContent.innerHTML = "";
-//  document.getElementById('clockdivclone').style.display = "inline-block";
-  //document.getElementById('clockdivclone').style.display = "none";
   t = createElementAndText("P", "Review the Bill of Materials, determine the total cost of materials,\
                                      enter it in the box, and click NEXT to proceed to the next question.",
                                "instruction-text", preformContent);
@@ -98,10 +93,8 @@ function BOMQuestion() {
   createFormField("BOM", formEntry);
 
   wc.appendChild(document.createElement("BR"));
-//  createButton("startTableAssessment1A()", "NEXT", wc);
   createButton("measurementQuestion()", "NEXT", wc);
 } // BOMQuestions
-
 
 function measurementQuestion() {
   console.log("measurementQuestion");
@@ -112,19 +105,10 @@ function measurementQuestion() {
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
   infoHeading.appendChild(document.createElement("HR"));
 
-//  infoHeading.innerHTML = "";
-  //let t = createElementAndText("P", "Continue to follow the instructions from the packet labeled \"Work Instruction Assessment 1\".",
-  //                         "instruction-text", infoHeading);
-  //t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
-  //let t = createElementAndText("P", "Continue to follow the instructions from the packet labeled \"Work Instruction Assessment 1\".",
-  //                         "instruction-text", preformContent);
-  //t.setAttribute("style", "font-size: 18px");
-
-  preformContent.innerHTML = '<p class="instruction-text">Measure the length, width, and depth of the Assembly from Assessment 1B \
-                                 and record the results below.  Measurements should be taken in inches to the nearest eigth of an inch.  \
+  preformContent.innerHTML = '<p class="instruction-text">Enter the length and two width measurements from step #1 below.  \
                                  The drop-down box is used to select the measurement to the nearest one \
-                                 eigth of an inch.<br><br>For example: If the measurement were 5 7/8 inches then 5 would \
-                                 be entered into the first box and 7/8 would be selected from the drop-down.</p><br>';
+                                 eigth of an inch.<br>For example: If the measurement were 5 7/8 inches then 5 would \
+                                 be entered into the first box and 7/8 would be selected from the drop-down.</p>';
 
   let fractions = ["", "1/8", "1/4", "3/8", "1/2", "5/8", "3/4", "7/8"];
 
@@ -166,9 +150,7 @@ function measurementQuestion() {
 
   wc.appendChild(document.createElement("BR"));
 
-//  createButton('processState("A1Q_DONE")', "NEXT", wc);
-//createButton('sendSerial(CMDS.SA1B)', "NEXT", wc);
-createButton('startTableAssessment1A()', "NEXT", wc);
+  createButton('startTableAssessment1A()', "NEXT", wc);
 } //measurementQuestion
 
 function startTableAssessment1A() {
@@ -180,14 +162,6 @@ function startTableAssessment1A() {
                            "instruction-text", infoHeading);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
 
-//  let t = createElementAndText("P", "Assessment Test #1 in Progress...", "instruction-text", infoHeading);
-//  t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
-//let t = createElementAndText("P", "Follow the instructions from step #2.",
-//                         "instruction-text", infoHeading);
-//t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
-  //t = createElementAndText("P", "Follow the directions in the instruction packet to complete Table Assessment 1A.",
-  //                         "instruction-text", infoHeading);
-  //t.setAttribute("style", "font-size: 18px; font-weight: bold; text-align: center");
   if (NO_TABLE) {
     processState(CMDS.SA1A);
   } else {
@@ -197,18 +171,10 @@ function startTableAssessment1A() {
 
 function startTableAssessment1B() {
   resetWC();
-//  let t = createElementAndText("P", "Assessment Test #1 in Progress...", "instruction-text", infoHeading);
-//  t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
+
   infoHeading.innerHTML = '';
   infoHeading.appendChild(document.createElement("HR"));
   let t = createElementAndText("P", "Continue to follow the instructions from the packet labeled \"Work Instruction Assessment 1\" step #3.",
                                "instruction-text", infoHeading);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
-  //infoHeading.appendChild(document.createElement("HR"));
-
-//  if (NO_TABLE) {
-//    processState(CMDS.SA1B);
-//  } else {
-//    sendSerial(CMDS.SA1B);
-//  }//  sendSerial(CMDS.SA1B);
 } // startTableAssessment1B()

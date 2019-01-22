@@ -19,7 +19,7 @@ const connectToTablePromise = new Promise(function(resolve, reject) {
   SerialPort.list(function (err, ports) {
     ports.forEach(function(port) {
       console.log("Port " + port.comName + ", Vendor " + port.vendorId + ", Manufacturer " + port.manufacturer);
-      if (typeof port.manufacturer !== 'undefined' && port.manufacturer.includes("Arduino LLC")) {
+      if ((port.vendorId == '2341') || (typeof port.manufacturer !== 'undefined' && port.manufacturer.includes("Arduino LLC"))) {
         portName = port.comName;
         console.log("PORT " + portName + " DETECTED");
       }

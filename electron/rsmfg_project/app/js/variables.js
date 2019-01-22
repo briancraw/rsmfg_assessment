@@ -1,9 +1,13 @@
 var NO_TABLE = false;
 var SERIAL_DEBUG = false;
-var A1_TIMER = 600000; // 10 minutes
-var A2_TIMER = 600000; // 10 minues;
-var A3_TIMER = 600000; // 10 minues;
+
 var MINUTE = 60000; // 1 minute;
+//var A1_TIMER = 20000;
+//var A2_TIMER = 20000;;
+//var A3_TIMER = 5000;
+var A1_TIMER = 10*MINUTE;
+var A2_TIMER = 10*MINUTE;
+var A3_TIMER = 10*MINUTE;
 
 const ASSESSMENTS = {
   A1: "A1",
@@ -79,9 +83,9 @@ sessionStorage["width2_fractions"] = "";
 
 const bomAnswer = "4.91";
 const width1Answer = "2";
-const width1_fractionsAnswer = "1/2";
+const width1_fractionsAnswer = "1/4";
 const width2Answer = "2"
-const width2_fractionsAnswer = "1/4";
+const width2_fractionsAnswer = "1/2";
 const lenAnswer = "6";
 const len_fractionsAnswer = "";
 

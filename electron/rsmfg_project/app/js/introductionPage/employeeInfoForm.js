@@ -9,10 +9,6 @@ function employeeInfoForm() {
   sessionStorage[date] = "";
   sessionStorage[employeeNum] = "";
 
-//  let fcName = document.getElementById("form-name");
-//  fcName.innerHTML = "";
-//  let fcEntry = document.getElementById("form-entry");
-//  fcEntry.innerHTML = "";
   formName.innerHTML = "";
   formEntry.innerHTML = "";
 
@@ -31,9 +27,9 @@ function employeeInfoForm() {
 function validateEntries() {
   let form_incomplete = false;
   let form_invalid = false;
-  let dateRegExp = /(\d?\d)\/(\d?\d)\/(\d\d\d\d)/;
-  let ssnRegExp = /(\d){4}/;
-  let nameRegExp = /[a-zA-z]+/;
+  let dateRegExp = /^(\d?\d)\/(\d?\d)\/(\d\d\d\d)$/;
+  let ssnRegExp = /^(\d){4}$/;
+  let nameRegExp = /^[a-zA-z]+$/;
   let t;
 
   infoHeading.innerHTML = "";
@@ -48,10 +44,7 @@ function validateEntries() {
     form_invalid = true;
     t = createElementAndText("P", "The First Name field must consist of only letters", "instruction-text", infoHeading);
     t.setAttribute("style", "color:red; text-align:center");
-    //infoHeading.innerHTML = "The First Name field must consist of only letters";
-    //infoHeading.style.color = "red";
     document.getElementById("window-content").style.backgroundColor = "lightgray";
-  //  sessionStorage[firstName] = "";
   }
 
   if (isBlank(sessionStorage[lastName])) {
@@ -62,10 +55,7 @@ function validateEntries() {
     form_invalid = true;
     t = createElementAndText("P", "The Last Name field must consist of only letters", "instruction-text", infoHeading);
     t.setAttribute("style", "color:red; text-align:center");
-    //infoHeading.innerHTML = "The Last Name field must consist of only letters";
-    //infoHeading.style.color = "red";
     document.getElementById("window-content").style.backgroundColor = "lightgray";
-  //  sessionStorage[lastName] = "";
   }
 
   if (isBlank(sessionStorage[ssn])) {
@@ -76,10 +66,7 @@ function validateEntries() {
     form_invalid = true;
     t = createElementAndText("P", "SSN must be a 4 digit number", "instruction-text", infoHeading);
     t.setAttribute("style", "color:red; text-align:center");
-    //infoHeading.innerHTML = "SSN must be a 4 digit number";
-    //infoHeading.style.color = "red";
     document.getElementById("window-content").style.backgroundColor = "lightgray";
-  //  sessionStorage[ssn] = "";
   }
 
   if (isBlank(sessionStorage[date])) {
@@ -90,10 +77,7 @@ function validateEntries() {
     form_invalid = true;
     t = createElementAndText("P", "Date must be in the format MM/DD/YYYY", "instruction-text", infoHeading);
     t.setAttribute("style", "color:red; text-align:center");
-    //infoHeading.innerHTML = "Date must be in the format MM/DD/YYYY";
-    //infoHeading.style.color = "red";
     document.getElementById("window-content").style.backgroundColor = "lightgray";
-    //sessionStorage[date] = "";
   }
 
   if (isBlank(sessionStorage[employeeNum])) {
@@ -104,8 +88,6 @@ function validateEntries() {
   if (form_incomplete) {
     t = createElementAndText("P", "All entries must be complete before proceeding", "instruction-text", infoHeading);
     t.setAttribute("style", "color:red; text-align:center");
-    //infoHeading.innerHTML = "All entries must be complete before proceeding!"
-    //infoHeading.style.color = "red";
     document.getElementById("window-content").style.backgroundColor = "lightgray";
   } else if (!form_invalid){
     infoHeading.style.color = "black";

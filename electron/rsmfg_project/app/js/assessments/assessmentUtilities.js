@@ -48,50 +48,36 @@ function calculateA1Score() {
   if (sessionStorage["BOM"] == bomAnswer) {
     score = score + 5;
   }
-  console.log("SCORE1: " + score);
+  console.log("BOM SCORE: " + score);
 
   if (sessionStorage["width1"] == width1Answer) {
     if (sessionStorage["width1_fractions"] == width1_fractionsAnswer) {
       score = score + 1;
     }
   }
-  console.log("SCORE2: " + score);
+  console.log("WIDTH1 SCORE: " + score);
 
   if (sessionStorage["width2"] == width2Answer) {
     if (sessionStorage["width2_fractions"] == width2_fractionsAnswer) {
       score = score + 1;
     }
   }
-  console.log("SCORE3: " + score);
+  console.log("WIDTH2 SCORE: " + score);
 
   if (sessionStorage["len"] == lenAnswer) {
     if (sessionStorage["len_fractions"] == len_fractionsAnswer) {
       score = score + 1;
     }
   }
-  console.log("SCORE4: " + score);
+  console.log("LEN SCORE: " + score);
 
   // A1A has 3 available points
   score = score + scores.a1.a1a.tableScore;
-  console.log("SCORE5: " + score);
+  console.log("A1A TABLE SCORE: " + score);
 
   // A1B has 4 available points
   score = score + scores.a1.a1b.tableScore;
-  console.log("SCORE6: " + score);
-
-  //let a1aTimeScore = getTimeScore(scores.a1.a1a.tableTime);
-  //console.log ("A1A Time " + scores.a1.a1a.tableTime + ", " +  a1aTimeScore);
-  //a1aTimeScore = 0.3 * (a1aTimeScore/100) * A1A_TOTAL_AVAIL_PTS;
-  //console.log ("A1A Time Score " + a1aTimeScore);
-  //score = score + a1aTimeScore;
-//  score = score + getTimeScore(scores.a1.a1a.tableTime);
-  //console.log("SCORE7: " + score);
-
-  //let a1bTimeScore = getTimeScore(scores.a1.a1b.tableTime);
-  //console.log ("A1B Time " + scores.a1.a1b.tableTime + ", " + a1bTimeScore);
-  //a1bTimeScore = 0.3 * (a1bTimeScore/100) * A1B_TOTAL_AVAIL_PTS;
-  //console.log ("A1B Time Score " + a1bTimeScore);
-  //score = score + a1bTimeScore;
+  console.log("A1B TABLE SCORE: " + score);
 
   let a1TotalTime = scores.a1.a1b.tableTime+scores.a1.a1a.tableTime
   let a1TimeScore = getTimeScore(a1TotalTime);
@@ -99,16 +85,13 @@ function calculateA1Score() {
   a1TimeScore = (a1TimeScore/100) * A1_TOTAL_TIME_PTS;
   console.log ("A1 Time Score " + a1TimeScore);
   score = score + a1TimeScore;
-//score = score + getTimeScore(scores.a1.a1b.tableTime);
-  console.log("SCORE8: " + score);
+  console.log("A1 SCORE: " + score);
 
-  //return (score/numAnswers);
   return score;
 } // calculateA1Score
 
 function calculateA2Score() {
   let score = 0;
-//  let numAnswers = 5;
   if (sessionStorage["leftPocketCount"] == leftPocketCountAnswer) {
     score = score + 1;
   }
@@ -118,38 +101,34 @@ function calculateA2Score() {
   if (sessionStorage["rightPocketCount"] == rightPocketCountAnswer) {
     score = score + 1;
   }
-  console.log("SCORE10: " + score);
+  console.log("A2 POCKET SCORE: " + score);
   // A2 has 7 available points
   score = score + scores.a2.tableScore;
-  console.log("SCORE11: " + score);
+  console.log("A2 TABLE SCORE: " + score);
   let a2TimeScore = getTimeScore(scores.a2.tableTime);
   console.log ("A2 Time " + scores.a2.tableTime + ", " +  a2TimeScore);
   a2TimeScore = (a2TimeScore/100) * A2_TOTAL_TIME_PTS;
   console.log ("A2 Time Score " + a2TimeScore);
   score = score + a2TimeScore;
   //score = score + getTimeScore(scores.a2.tableTime);
-  console.log("SCORE12: " + score);
+  console.log("A2 SCORE: " + score);
 
-  //return (score/numAnswers);
   return score;
 } // calculateA2Score
 
 function calculateA3Score() {
   let score = 0;
-  //let numAnswers = 2;
 
   // A3 has 9 available points
   score = score + scores.a3.tableScore;
-  console.log("SCORE13: " + score);
+  console.log("A3 TABLE SCORE: " + score);
   let a3TimeScore = getTimeScore(scores.a3.tableTime);
   console.log ("A3 Time " + scores.a3.tableTime + ", " +  a3TimeScore);
   a3TimeScore = (a3TimeScore/100) * A3_TOTAL_TIME_PTS;
   console.log ("A3 Time Score " + a3TimeScore);
   score = score + a3TimeScore;
-  //score = score + getTimeScore(scores.a3.tableTime);
-  console.log("SCORE14: " + score);
+  console.log("A3 SCORE: " + score);
 
-  //return (score/numAnswers);
   return score;
 } // calculateA3Score
 
@@ -165,23 +144,7 @@ function getTimeScore(val) {
   } else {
     return 0;
   }
-}
-
-/*
-function getTimeScoreA2A3(val) {
-  if (val < 225000) { // 3.75 minutes
-    return 100;
-  } else if (val < 450000) { // 7.5 minutes
-    return 50;
-  } else if (val < 675000) { // 11.25 minutes
-    return 33.33;
-  } else if (val < 900000) { // 15 minutes
-    return 10;
-  } else {
-    return 0;
-  }
-}
-*/
+} // getTimeScore
 
 function calculateScores() {
   // A1 Total
@@ -193,10 +156,9 @@ function calculateScores() {
   console.log ("A2.TOTAL: " + scores.a2.total);
   console.log ("A3.TOTAL: " + scores.a3.total);
   console.log("SCORES: " + JSON.stringify(scores));
-} // calculateScore
+} // calculateScores
 
 function assessmentsComplete() {
-  //wc.innerHTML = "";
   resetWCAll();
   calculateScores();
   let t = createElementAndText("DIV", "Assessment Test Complete!", "instruction-text", wc);
@@ -219,14 +181,12 @@ function assessmentsComplete() {
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
 
   //sendResultsToQualtrics();
+
   hl = document.createElement('BR');
   hl.setAttribute("style", "margin-top: 10px; margin-bottom: 10px");
   wc.appendChild(hl);
   createButton("restartAssessment()", "Done", wc);
-    //let yesButton = document.getElementById("YES_button");
-    //yesButton.setAttribute("style", "margin-bottom: 5px");
-    //createButton("alertNoCertify()", "NO", wc);
-} // assessmentsComplete
+} // assessmentsCompleted
 
 var reload = ()=>{
   getCurrentWindow().reload()
@@ -235,19 +195,3 @@ var reload = ()=>{
 function restartAssessment() {
   reload();
 }
-
-/*
-function alertNoCertify() {
-  let alertDiv = document.createElement("DIV");
-  alertDiv.className = "alert";
-  let alertSpan = document.createElement("SPAN");
-  alertSpan.className = "closebtn";
-  alertSpan.setAttribute("onclick", "this.parentElement.style.display='none';");
-  alertSpan.innerHTML = "&times;";
-  alertDiv.appendChild(alertSpan);
-  let t = document.createTextNode("The Assessment is not valid until the certification is accepted!");
-  alertDiv.appendChild(t);
-  alertDiv.setAttribute("style", "font-size: 20px; font-weight: bold");
-  infoHeading.appendChild(alertDiv);
-} // alertNoCertify
-*/

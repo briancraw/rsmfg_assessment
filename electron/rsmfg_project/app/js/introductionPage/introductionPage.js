@@ -14,7 +14,6 @@ function introductionPage() {
   employeeInfoForm();
 
   createButton("validateEntries()", "NEXT", footer);
-  //createButton("confirmTableLayoutPage()", "NEXT", footer);
 } // introductionPage
 
 function alertNoCertify() {

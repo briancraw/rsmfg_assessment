@@ -9,7 +9,6 @@ function getTimeRemaining(endtime) {
   };
 } // getTimeRemaining
 
-
 function createCountdownTimer(timeoutInMilliseconds) {
   let clockDiv = document.getElementById('clockdiv');
   clearInterval(timeinterval);
@@ -33,9 +32,7 @@ function createCountdownTimer(timeoutInMilliseconds) {
 
   let deadline = new Date(Date.parse(new Date()) + timeoutInMilliseconds);
   initializeClock([clockDiv, clockDivClone], deadline);
-//  initializeClock(clockDivClone, deadline);
 } // createCountdownTimer
-
 
 function initializeClock(clocks, endtime) {
   function updateClock() {
@@ -45,8 +42,8 @@ function initializeClock(clocks, endtime) {
       if (remainingTime.total <= 0) {
         clearInterval(timeinterval);
         timeoutHandler();
+        break;
       } else if (remainingTime.minutes < 2) {
-        //let clockDiv = document.getElementById("clockdiv");
         clocks[c].setAttribute("style", "color: red");
       }
     }
