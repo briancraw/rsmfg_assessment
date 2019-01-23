@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018, ???????, All rights reserved
+  Copyright (C) 2018, 3DM LLC, All rights reserved
   Unauthorized copying of this file, via any medium is strictly prohibited
   Proprietary and confidential
   Written by Brian Craw <craw.brian@gmail.com>, August 2018
@@ -18,7 +18,7 @@
 #define PASS true
 #define FAIL false
 
-#define DEBOUNCE_DELAY 25
+#define DEBOUNCE_DELAY 5
 #define NUM_DEBOUNCE_SAMPLES 2
 
 #ifdef DEBUG

@@ -1,13 +1,11 @@
 /*
-  Copyright (C) 2018, ???????, All rights reserved
+  Copyright (C) 2018, 3DM LLC, All rights reserved
   Unauthorized copying of this file, via any medium is strictly prohibited
   Proprietary and confidential
   Written by Brian Craw <craw.brian@gmail.com>, August 2018
   
   Description:
-  Define all the pin configuration information here.
-  Each "test" on the skill table is given a unique number.  Each pin associated with 
-  that test uses the test name as a prefix for its pin names
+  Define all the pin configuration information for each Assessment
   
   Revision Comments:
   08/15/2018 - Initial version.
@@ -60,13 +58,10 @@ const int assessment1InputPins[12] = {ASSESS_1_PUZZLE_1, ASSESS_1_PUZZLE_2, ASSE
                                       ASSESS_1_PUZZLE_BTN_1,
                                       ASSESS_1_BTN_1};
 const int assessment1NumInputPins = sizeof(assessment1InputPins)/sizeof(int);
+
 const int assessment1AssemblyPins[4] = {ASSESS_1_ASSEMBLY_1, ASSESS_1_ASSEMBLY_2, ASSESS_1_ASSEMBLY_3,
                                         ASSESS_1_ASSEMBLY_4};
 const int assessment1NumAssemblyPins = sizeof(assessment1AssemblyPins)/sizeof(int);
-//const int assessment1PuzzlePins[6] = {ASSESS_1_PUZZLE_1, ASSESS_1_PUZZLE_2, ASSESS_1_PUZZLE_3,
-//                                      ASSESS_1_PUZZLE_4, ASSESS_1_PUZZLE_5, ASSESS_1_PUZZLE_6};
-//const int assessment1PuzzlePinExpVals[6] = {ASSESS_1_PUZZLE_1_EXP_VAL, ASSESS_1_PUZZLE_2_EXP_VAL, ASSESS_1_PUZZLE_3_EXP_VAL,
-//                                            ASSESS_1_PUZZLE_4_EXP_VAL, ASSESS_1_PUZZLE_5_EXP_VAL, ASSESS_1_PUZZLE_6_EXP_VAL};
 const int assessment1PuzzlePins[3] = {ASSESS_1_PUZZLE_1, ASSESS_1_PUZZLE_3,
                                       ASSESS_1_PUZZLE_6};
 const int assessment1PuzzlePinExpVals[3] = {ASSESS_1_PUZZLE_1_EXP_VAL, ASSESS_1_PUZZLE_3_EXP_VAL,

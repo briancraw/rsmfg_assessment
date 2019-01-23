@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018, ???????, All rights reserved
+  Copyright (C) 2018, 3DM LLC, All rights reserved
   Unauthorized copying of this file, via any medium is strictly prohibited
   Proprietary and confidential
   Written by Brian Craw <craw.brian@gmail.com>, August 2018
@@ -15,12 +15,6 @@
 #define SERIAL_H
 
 const int BSIZE = 4;
-
-bool initializeLink();
-
-bool sendResult(int assessmentNum, bool result);
-
-//void readSerial ();
 char * readSerial ();
 
 #endif

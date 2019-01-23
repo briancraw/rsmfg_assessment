@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018, ???????, All rights reserved
+  Copyright (C) 2018, 3DM LLC, All rights reserved
   Unauthorized copying of this file, via any medium is strictly prohibited
   Proprietary and confidential
   Written by Brian Craw <craw.brian@gmail.com>, August 2018
@@ -24,14 +24,17 @@
 #include "assessment.h"
 #include "pins.h"
 
-float runAssessment3() {
+/*
+ * runAssessment3()
+ * Lights A3 LED and iterates over checking sensor values while 
+ * waiting for the button to be pressed or a timeout to occur.
+ */
+int runAssessment3() {
   int i = 0;
   int pwmValue = 0;
-//bool validDutyCycleDetected[assessment3NumInputPins] = {0, 0, 0, 0, 0};
   bool matchingPWMsDetected = false;
-  int buttonVal;
+  int buttonVal = HIGH;
   int rockerVals[assessment3NumRockerPins];
-  int numCorrect = 0;
   char * buffer;
   float score = 0.0;
 
@@ -51,22 +54,16 @@ float runAssessment3() {
 
   digitalWrite(ASSESS_3_BTN_LED_1, HIGH);
 
-  while (buttonVal == HIGH && a3Stop == false) {  
+  while (buttonVal == HIGH && a3Stop == false) {
+    a3Result = 0;
     buffer = readSerial();
     if (commandReady) { exec(buffer); }
-    numCorrect = 0;
-
+    
     for (i = 0; i < assessment3NumRockerPins; i++) {
       rockerVals[i] = digitalReadWithDebounce(assessment3RockerPins[i], DEBOUNCE_DELAY, NUM_DEBOUNCE_SAMPLES);
-      //DEBUGNOLN("ROCKER ");
-      //DEBUGNOLN(assessment3RockerPins[i]);
-      //DEBUGNOLN(" VAL ");
-      //DEBUGNOLN(rockerVals[i]);  
-      //DEBUGNOLN(" EXP: ");
-      //DEBUG(assessment3RockerVals[i]);
       
       if (rockerVals[i] == assessment3RockerVals[i]) {
-        numCorrect++;
+        a3Result++;
       }
     } // check rocker values
 
@@ -79,52 +76,113 @@ float runAssessment3() {
       //   w -> Rb
       //   k -> Rk
 
-  DEBUGNOLN(i);
-  DEBUGNOLN(": PWM VALUE: ");
-  DEBUG(pwmValue);
+      DEBUGNOLN(i);
+      DEBUGNOLN(": PWM VALUE: ");
+      DEBUG(pwmValue);
+  
       if (i == R && ((assessment3InputPinPWMValue[Y] <= (pwmValue*1.1)) && 
                      (assessment3InputPinPWMValue[Y] >= (pwmValue*0.9)))) {
-        DEBUG("R GOOD");
-        numCorrect++;
+        DEBUGNOLN("R ");
+        a3Result++;
       }
       if (i == B && ((assessment3InputPinPWMValue[R] <= (pwmValue*1.1)) && 
                      (assessment3InputPinPWMValue[R] >= (pwmValue*0.9)))) {
-        DEBUG("B GOOD");
-        numCorrect++;
+        DEBUGNOLN("B ");
+        a3Result++;
       }
       if (i == Y && ((assessment3InputPinPWMValue[W] <= (pwmValue*1.1)) && 
                      (assessment3InputPinPWMValue[W] >= (pwmValue*0.9)))) {
-        DEBUG("Y GOOD");
-        numCorrect++;
+        DEBUGNOLN("Y ");
+        a3Result++;
       }
       if (i == W && ((assessment3InputPinPWMValue[B] <= (pwmValue*1.1)) && 
                      (assessment3InputPinPWMValue[B] >= (pwmValue*0.9)))) {
-        DEBUG("W GOOD");
-        numCorrect++;
+        DEBUGNOLN("W ");
+        a3Result++;
       }
       if (i == K && ((assessment3InputPinPWMValue[K] <= (pwmValue*1.1)) && 
                      (assessment3InputPinPWMValue[K] >= (pwmValue*0.9)))) {
-        DEBUG("K GOOD");
-        numCorrect++;
+        DEBUGNOLN("K ");
+        a3Result++;
       }
+      DEBUG("");
     } // check cables
-
-    // check button
-    buttonVal = digitalReadWithDebounce(ASSESS_3_BTN_1, DEBOUNCE_DELAY, NUM_DEBOUNCE_SAMPLES);
-    if (buttonVal == LOW) {
-      flashLED(ASSESS_3_BTN_LED_1, 3, 200);
-      DEBUG("Assessment 3 button pressed");
-    }
-
+    
+    buttonVal = readA3Button();
     if (a3Stop == true) {
       DEBUG("A3 STOP DETECTED!");
     }
-  } // while
+  } // while button not pushed
   
+  a3Result = 0;
+
+  for (i = 0; i < assessment3NumRockerPins; i++) {
+    rockerVals[i] = digitalReadWithDebounce(assessment3RockerPins[i], DEBOUNCE_DELAY, NUM_DEBOUNCE_SAMPLES);
+      
+    if (rockerVals[i] == assessment3RockerVals[i]) {
+      a3Result++;
+    }
+  } // check rocker values
+
+  for (i = 0; i < assessment3NumInputPWMPins; i++) {
+    pwmValue = pulseIn(assessment3InputPWMPins[i], HIGH, pinValueTimeout);
+    // compare read value to all PWM outputs and look for a match
+    //   r -> Ry
+    //   b -> Rr 
+    //   y -> Rw
+    //   w -> Rb
+    //   k -> Rk
+
+    DEBUGNOLN(i);
+    DEBUGNOLN(": 1PWM VALUE: ");
+    DEBUG(pwmValue);
+  
+    if (i == R && ((assessment3InputPinPWMValue[Y] <= (pwmValue*1.1)) && 
+                   (assessment3InputPinPWMValue[Y] >= (pwmValue*0.9)))) {
+      DEBUG("R GOOD");
+      a3Result++;
+    }
+    if (i == B && ((assessment3InputPinPWMValue[R] <= (pwmValue*1.1)) && 
+                   (assessment3InputPinPWMValue[R] >= (pwmValue*0.9)))) {
+      DEBUG("B GOOD");
+      a3Result++;
+    }
+    if (i == Y && ((assessment3InputPinPWMValue[W] <= (pwmValue*1.1)) && 
+                   (assessment3InputPinPWMValue[W] >= (pwmValue*0.9)))) {
+      DEBUG("Y GOOD");
+      a3Result++;
+    }
+    if (i == W && ((assessment3InputPinPWMValue[B] <= (pwmValue*1.1)) && 
+                   (assessment3InputPinPWMValue[B] >= (pwmValue*0.9)))) {
+      DEBUG("W GOOD");
+      a3Result++;
+    }
+    if (i == K && ((assessment3InputPinPWMValue[K] <= (pwmValue*1.1)) && 
+                   (assessment3InputPinPWMValue[K] >= (pwmValue*0.9)))) {
+      DEBUG("K GOOD");
+      a3Result++;
+    }
+  }// check cables
+
   a3Active = false;
   digitalWrite(ASSESS_3_BTN_LED_1, LOW);
   Serial.println("End of Assessment 3");
-  score = ((float)numCorrect/(float)(assessment3NumInputPWMPins+assessment3NumRockerPins))*100;
-  return score;
-}
+ 
+  return (a3Result);
+} //runAssessment3()
+
+/*
+ * readA3Button()
+ * returns the results of the A3 button value
+ */
+int readA3Button() {
+  int buttonVal;
+  // check button
+  buttonVal = digitalReadWithDebounce(ASSESS_3_BTN_1, DEBOUNCE_DELAY, NUM_DEBOUNCE_SAMPLES);
+  if (buttonVal == LOW) {
+    flashLED(ASSESS_3_BTN_LED_1, 3, 200);
+    DEBUG("Assessment 3 button pressed");
+  }
+  return buttonVal;
+} // readA3Button
 

@@ -21,11 +21,16 @@
 #include "pins.h"
 #include "button.h"
 
-float runAssessment2() {
+/*
+ * runAssessment2()
+ * Lights A2 LED and iterates over checking sensor values while 
+ * waiting for the button to be pressed or a timeout to occur.
+ */
+int runAssessment2() {
   int i = 0;
   int pinVals[assessment2NumScrewPins];
   int buttonVal = HIGH;
-  int numCorrect = 0;
+  //int numCorrect = 0;
   float score = 0.0;
   char * buffer;
 
@@ -43,7 +48,7 @@ float runAssessment2() {
   while (buttonVal == HIGH && a2Stop == false) {
     buffer = readSerial();
     if (commandReady) { exec(buffer); }
-    numCorrect = 0;
+    a2Result = 0;
 
     // loop through and read the state of each pin
     for (i = 0; i < assessment2NumScrewPins; i++) {
@@ -51,7 +56,7 @@ float runAssessment2() {
       if (pinVals[i] == HIGH) {
         digitalWrite(assessment2ScrewLedPins[i], LOW);
       } else {
-        numCorrect++;
+        a2Result++;
         digitalWrite(assessment2ScrewLedPins[i], HIGH);  
         DEBUGNOLN("PIN ");
         DEBUGNOLN(assessment2ScrewPins[i]);
@@ -79,8 +84,6 @@ float runAssessment2() {
   Serial.println("End of Assessment 2");
   a2Active = false;
   
-  // BCRA: TODO: Calculate Score
-  score = ((float)numCorrect/(float)assessment2NumScrewPins)*100;
-  return score;
+  return a2Result;
 } // runAssessment2
 
