@@ -8,7 +8,8 @@
     "start": "electron .",
     "install": "electron-rebuild",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "package-win": "electron-packager . rsmfg-assessment-app --overwrite --asar=true -- platform=win32 --arch=ia32 --prune=true --out=release-builds --version-string.CompanyName=RSMFG --version-string.FileDescription=RSMFG_Assessment_App --version-string.ProductName=\"RSMFG Assessment Application\""
+    "package-win": "electron-packager . rsmfg-assessment-app --overwrite --asar -- platform=win32 --arch=ia32 --prune=true --out=release-builds --version-string.CompanyName=RSMFG --version-string.FileDescription=RSMFG_Assessment_App --version-string.ProductName=\"RSMFG Assessment Application\"",
+    "create-installer-win": "node installers/windows/createinstaller.js"
   },
   "author": "Brian Craw",
   "license": "ISC",
@@ -20,6 +21,7 @@
   "devDependencies": {
     "electron": "^3.1.0",
     "electron-packager": "^13.0.1",
-    "electron-rebuild": "^1.8.2"
+    "electron-rebuild": "^1.8.2",
+    "electron-winstaller": "^2.7.0"
   }
 }
