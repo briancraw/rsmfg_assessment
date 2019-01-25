@@ -11,7 +11,7 @@ getInstallerConfig()
 function getInstallerConfig () {
   console.log('creating windows installer')
   const rootPath = path.join('./')
-  const outPath = path.join(rootPath, 'rsmfg-assessment-app-win32-x64')
+  const outPath = path.join(rootPath, 'release-builds', 'rsmfg-assessment-app-win32-x64')
 
   return Promise.resolve({
     appDirectory: outPath,//path.join(outPath, 'rsmfg-assessment-app-win32-x64/'),

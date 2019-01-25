@@ -7,6 +7,10 @@ const url = require("url");
 var {app, BrowserWindow, ipcMain} = electron;
 var win;
 
+//const nativeImage = electron.nativeImage;
+//let appIcon = nativeImage.createFromPath(path.join(__dirname, 'img', 'icon_Hpx_icon.ico'));
+
+
 //handle setupevents as quickly as possible
 //const setupEvents = require('./installers/setupEvents')
 //if (setupEvents.handleSquirrelEvent()) {
