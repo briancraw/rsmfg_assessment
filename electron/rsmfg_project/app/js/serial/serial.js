@@ -1,52 +1,73 @@
-var port;
-const SerialPort = require('serialport');
-const parsers = SerialPort.parsers;
-let portName = null;
+/*
+  Copyright (C) 2018, 3DM LLC, All rights reserved
+  Unauthorized copying of this file, via any medium is strictly prohibited
+  Proprietary and confidential
+  Written by Brian Craw <craw.brian@gmail.com>, February 2019
+
+  Revision Comments:
+  02/05/2018 - Initial version.
+*/
+
 var {ipcRenderer, remote} = require('electron');
 var rdyForResults = false;
 
-ipcRenderer.on('connectToAssessmentTable', (event, arg) => {
-  connectToTablePromise
-  .then(function(r) {
-    console.log("Connected to Assessment Table Port " + r.portName);
-  })
-  .catch(function (r) {
-    console.log(r.message);
-  });
-});
+var port;
+var SerialPort = require('serialport');
+var parsers = SerialPort.parsers;
 
-const connectToTablePromise = new Promise(function(resolve, reject) {
-  SerialPort.list(function (err, ports) {
-    ports.forEach(function(port) {
-      console.log("Port " + port.comName + ", Vendor " + port.vendorId + ", Manufacturer " + port.manufacturer);
-      if ((port.vendorId == '2341') || (typeof port.manufacturer !== 'undefined' && port.manufacturer.includes("Arduino LLC"))) {
-        portName = port.comName;
-        console.log("PORT " + portName + " DETECTED");
-      }
+function connectToTable() {
+  connectToTablePromise()
+    .then(function(r) {
+      clearNotConnected();
+      console.log("Connected to Assessment Table Port " + r.portName);
+      TABLE_CONNECTED = true;
+    })
+    .catch(function (r) {
+      console.log(r.message);
+      reportNotConnected();
     });
+} // connectToTable()
 
-    if (portName != null) {
-      port = new SerialPort(portName, {
-        baudRate: 9600
+function connectToTablePromise() {
+    return new Promise(function(resolve, reject) {
+      let portName = null;
+      console.log("connectToTablePromise: ");
+      SerialPort.list(function (err, ports) {
+        ports.forEach(function(port) {
+          console.log("Port " + port.comName + ", Vendor " + port.vendorId + ", Manufacturer " + port.manufacturer);
+          if ((port.vendorId == '2341') || (typeof port.manufacturer !== 'undefined' && port.manufacturer.includes("Arduino LLC"))) {
+            portName = port.comName;
+            console.log("PORT " + portName + " DETECTED");
+          }
+        });
+
+        if (portName != null) {
+          port = new SerialPort(portName, {
+            baudRate: 9600
+          });
+          const parser = new parsers.Readline({ delimiter: '\n' });
+
+          parser.on('data', parseSerial);
+          port.pipe(parser);
+
+          port.on("open", showPortOpen);
+          port.on("close", showPortClose);
+          port.on('error', function(err) {
+            console.log('SerialPort Error: ', err.message)
+          });
+
+          let serialInfo = {connected: true, portName: portName, ports: ports};
+          resolve(serialInfo);
+        } else {
+          let reason = new Error("Failed to Connect!");
+          reject(reason);
+        }
       });
-      const parser = new parsers.Readline({ delimiter: '\n' });
+    });
+} // connectToTablePromise()
 
-      parser.on('data', parseSerial);
-      //parser.on('data', processState);
-
-      port.pipe(parser);
-
-      port.on('error', function(err) {
-        console.log('SerialPort Error: ', err.message)
-      });
-
-      let serialInfo = {connected: true, portName: portName, ports: ports};
-      resolve(serialInfo);
-    } else {
-      let reason = new Error("Failed to Connect!");
-      reject(reason);
-    }
-  });
+ipcRenderer.on('connectToAssessmentTable', (event, arg) => {
+  connectToTable();
 });
 
 
@@ -55,10 +76,21 @@ function sendSerial(command) {
   port.write(command + '\r');
 }
 
-function serialDebugBox(text) {
-  //let wc = document.getElementsByClassName("window-content");
-  //let element = wc;
+function showPortClose() {
+console.log("USB Connection Lost: ");
+reportNotConnected();
+}
 
+function showError(error) {
+console.log("Serial port error: " + error);
+}
+
+function showPortOpen() {
+console.log("USB Port Succesfully Opened");
+}
+
+
+function serialDebugBox(text) {
   let formDiv = document.createElement("DIV");
   let formLabel = document.createElement("LABEL");
   formLabel.className = "fill-box-desc-txt"

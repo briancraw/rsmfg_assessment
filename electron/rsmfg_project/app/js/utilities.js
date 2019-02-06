@@ -1,3 +1,13 @@
+/*
+  Copyright (C) 2018, 3DM LLC, All rights reserved
+  Unauthorized copying of this file, via any medium is strictly prohibited
+  Proprietary and confidential
+  Written by Brian Craw <craw.brian@gmail.com>, February 2019
+
+  Revision Comments:
+  02/05/2018 - Initial version.
+*/
+
 function resetWCAll() {
   topHeading.innerHTML = "";
   infoHeading.innerHTML = "";
@@ -162,3 +172,84 @@ function createSelectMenu(text, list, element) {
 function isBlank(str) {
   return (!str || /^\s*$/.test(str));
 } // isBlank
+
+function reportNotConnected() {
+  let alertDiv;
+  alertDiv = document.getElementById("alertMessage");
+  if (alertDiv == null) {
+    infoHeading.innerHTML = "";
+    alertDiv = document.createElement("DIV");
+    alertDiv.className = "alert";
+    alertDiv.setAttribute("id", "alertMessage");
+
+    let t = document.createTextNode("No Assessment Table detected. Any collected Assessment data may be invalid."+"\n"+
+                                     "Please connect the USB cable from the table and click Restart to restart the application.");
+    alertDiv.appendChild(t);
+    infoHeading.appendChild(alertDiv);
+
+    let btnDiv = document.createElement("DIV");
+    btnDiv.className = "form-button-div";
+    let btn = document.createElement("BUTTON");
+    btn.setAttribute("id", "alert_restart_button");
+    btn.setAttribute("onclick", "restartAssessment()");
+    btn.setAttribute("style", "margin: 5px");
+    btn.className = "form-button";
+    t = document.createTextNode("Restart");
+    btn.appendChild(t);
+    btnDiv.appendChild(btn);
+    infoHeading.appendChild(btnDiv);
+    topHeading.style.visibility = "hidden";
+    wc.style.visibility = "hidden";
+    footer.style.visibility = "hidden";
+  } else {
+    //alertDiv.remove();
+    //alertDiv.innerHTML = "";
+    //alertDiv.setAttribute("style", "display=show");
+  }
+} //reportNotConnected
+
+function clearNotConnected() {
+  let alertDiv = document.getElementById("alertMessage");
+  if (alertDiv != null) {
+    alertDiv.remove();
+  }
+  let alertButtonDiv = document.getElementById("alert_restart_button");
+  if (alertButtonDiv != null) {
+    alertButtonDiv.remove();
+  }
+  topHeading.style.visibility = "visible";
+  wc.style.visibility = "visible";
+  footer.style.visibility = "visible";
+} // clearNotConnected()
+
+function clearNotUploaded() {
+  let alertDiv = document.getElementById("alertMessage");
+  if (alertDiv != null) {
+    alertDiv.remove();
+  }
+  let alertButtonDiv = document.getElementById("alert_restart_button");
+  if (alertButtonDiv != null) {
+    alertButtonDiv.remove();
+  }
+  topHeading.style.visibility = "visible";
+  wc.style.visibility = "visible";
+  footer.style.visibility = "visible";
+} // clearNotConnected()
+
+var {ipcRenderer, remote} = require('electron');
+
+ipcRenderer.on('showVersion', (event, arg) => {
+  var { dialog } = require('electron').remote;
+  var path = require('path');
+  var appVersion = require('electron').remote.app.getVersion();
+
+  const dialogOpts = {
+     type: 'info',
+    // buttons: ['Restart', 'Later'],
+     title: 'RSMF Assessment Application',
+     message: "Version: " + appVersion,
+     //icon: path.join("app", "img", "icon_full.ico"),
+     //detail: 'A new version has been downloaded. Restart the application to apply the updates.'
+   };
+   dialog.showMessageBox(null, dialogOpts, (response) => {});
+});

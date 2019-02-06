@@ -1,3 +1,13 @@
+/*
+  Copyright (C) 2018, 3DM LLC, All rights reserved
+  Unauthorized copying of this file, via any medium is strictly prohibited
+  Proprietary and confidential
+  Written by Brian Craw <craw.brian@gmail.com>, February 2019
+
+  Revision Comments:
+  02/05/2018 - Initial version.
+*/
+
 const {Menu} = require('electron');
 const electron = require('electron');
 const app = electron.app;
@@ -12,6 +22,7 @@ const template = [
         }
     ]
   },
+  /*
   {
     label: 'Edit',
     submenu: [
@@ -44,6 +55,7 @@ const template = [
       }
     ]
   },
+  */
   {
     label: 'View',
     submenu: [
@@ -54,6 +66,7 @@ const template = [
           if (focusedWindow) focusedWindow.reload()
         }
       },
+
       {
         label: 'Toggle Developer Tools',
         accelerator: process.platform === 'darwin' ? 'Alt+Command+I' : 'Ctrl+Shift+I',
@@ -61,6 +74,8 @@ const template = [
           if (focusedWindow) focusedWindow.webContents.toggleDevTools()
         }
       },
+
+/*
       {
         type: 'separator'
       },
@@ -79,6 +94,7 @@ const template = [
       {
         role: 'togglefullscreen'
       }
+      */
     ]
   },
   {
@@ -92,6 +108,7 @@ const template = [
       }
     ]
   },
+  /*
   {
     label: "Serial",
     submenu: [
@@ -101,22 +118,20 @@ const template = [
           if (focusedWindow) focusedWindow.webContents.send('connectToAssessmentTable', null);
         }
       },
-      {
-        label: 'Serial Ports',
-        
-      }
     ]
-  }
-  /*{
-    role: 'help',
+  },
+  */
+  {
+    role: 'Help',
     submenu: [
       {
-        label: 'Learn More',
-        click () { require('electron').shell.openExternal('http://electron.atom.io') }
+        label: 'Version',
+        click (item, focusedWindow) {
+          if (focusedWindow) focusedWindow.webContents.send('showVersion', null);
+        }
       }
     ]
   }
-  */
 ]
 
 if (process.platform === 'darwin') {

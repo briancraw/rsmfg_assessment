@@ -1,6 +1,13 @@
 /*
-  Initiates Assessment 3
+  Copyright (C) 2018, 3DM LLC, All rights reserved
+  Unauthorized copying of this file, via any medium is strictly prohibited
+  Proprietary and confidential
+  Written by Brian Craw <craw.brian@gmail.com>, February 2019
+
+  Revision Comments:
+  02/05/2018 - Initial version.
 */
+
 function startAssessment3() {
   resetWCAll();
 
@@ -21,4 +28,4 @@ function startTableAssessment3() {
   } else {
     sendSerial(CMDS.SA3);
   }
-} // startTableAssessment3
+}

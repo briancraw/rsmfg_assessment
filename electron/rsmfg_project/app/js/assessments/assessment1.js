@@ -1,6 +1,13 @@
 /*
-  Initiates Assessment 1
+  Copyright (C) 2018, 3DM LLC, All rights reserved
+  Unauthorized copying of this file, via any medium is strictly prohibited
+  Proprietary and confidential
+  Written by Brian Craw <craw.brian@gmail.com>, February 2019
+
+  Revision Comments:
+  02/05/2018 - Initial version.
 */
+
 function assessment1StartPage() {
   resetWCAll();
 
@@ -29,7 +36,6 @@ function assessment1StartPage() {
 
   t = createElementAndText("P", "Click the START button when you are ready", "instruction-text", wc)
   t.setAttribute("style", "font-size: 20px; font-weight: bold; line-height: 2; color:red; text-align:center");
-
   createButton("startAssessment1()", "START", wc);
 } // assessment1StartPage
 

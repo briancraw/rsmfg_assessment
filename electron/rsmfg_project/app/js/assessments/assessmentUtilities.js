@@ -1,3 +1,13 @@
+/*
+  Copyright (C) 2018, 3DM LLC, All rights reserved
+  Unauthorized copying of this file, via any medium is strictly prohibited
+  Proprietary and confidential
+  Written by Brian Craw <craw.brian@gmail.com>, February 2019
+
+  Revision Comments:
+  02/05/2018 - Initial version.
+*/
+
 const {getCurrentWindow, globalShortcut} = require('electron').remote;
 
 function captureTime(assessment) {
@@ -158,9 +168,99 @@ function calculateScores() {
   console.log("SCORES: " + JSON.stringify(scores));
 } // calculateScores
 
-function assessmentsComplete() {
+function reportUploadFailed() {
+  let alertDiv;
+  alertDiv = document.getElementById("uploadMessage");
+  if (alertDiv == null) {
+    infoHeading.innerHTML = "";
+    alertDiv = document.createElement("DIV");
+    alertDiv.className = "alert";
+    alertDiv.setAttribute("id", "uploadMessage");
+
+    let t = document.createTextNode("A connection with the server could not be established.  The Assessment results were not uploaded."+"\n"+
+                                     "Check your network connection and click Retry to try again.");
+    alertDiv.appendChild(t);
+    infoHeading.appendChild(alertDiv);
+
+    let btnDiv = document.createElement("DIV");
+    btnDiv.className = "form-button-div";
+    let btn = document.createElement("BUTTON");
+    btn.setAttribute("id", "retry_button");
+    btn.setAttribute("onclick", "sendResults()");
+    btn.setAttribute("style", "margin: 5px");
+    btn.className = "form-button";
+    t = document.createTextNode("Retry");
+    btn.appendChild(t);
+    btnDiv.appendChild(btn);
+
+    btn = document.createElement("BUTTON");
+    btn.setAttribute("id", "restart_button");
+    btn.setAttribute("onclick", "restartAssessment()");
+    btn.setAttribute("style", "margin: 5px");
+    btn.className = "form-button";
+    t = document.createTextNode("Restart");
+    btn.appendChild(t);
+    btnDiv.appendChild(btn);
+
+    infoHeading.appendChild(btnDiv);
+  }
+} //reportUploadFailed
+
+function displayUploadSuccessMessage() {
+  infoHeading.innerHTML = "";
+  let t = createElementAndText("DIV", "Results upload was successful!", "instruction-text", infoHeading);
+  t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
+
+  createButton("restartAssessment()", "Done", wc);
+
+  let hl = document.createElement('BR');
+  hl.setAttribute("style", "margin-top: 10px; margin-bottom: 10px");
+  wc.appendChild(hl);
+} // displayUploadSuccessMessage
+
+function retryUpload(count) {
+  let retryCount;
+  let successful = false;
+
+  let p = Promise.resolve();
+  for (retryCount = 0; retryCount < count; retryCount++) {
+    p = p.then(_ => new Promise(resolve =>
+      setTimeout(function() {
+      sendResultsToQualtrics()
+      .then(function(r) {
+        successful = true;
+        displayUploadSuccessMessage();
+        console.log("Uploaded results on retry attempt #" + retryCount);
+        retryCount = count;
+      })
+      .catch(function(r) {
+        successful = false;
+        reportUploadFailed();
+        console.log("Failed to upload on retry attempt #" + retryCount);
+      })
+    }, 2000)
+  ));
+    if (successful == true) {break;}
+  }
+} // retryUpload
+
+function sendResults() {
+  let successful = false;
+  sendResultsToQualtrics()
+    .then(function(r) {
+      successful = true;
+      displayUploadSuccessMessage();
+    })
+    .catch(function(r) {
+      console.log("Upload error response: " + r);
+      if (successful == false) {
+        retryUpload(3);
+      }
+    })
+} // sendResults()
+
+function displayScores() {
   resetWCAll();
-  calculateScores();
   let t = createElementAndText("DIV", "Assessment Test Complete!", "instruction-text", wc);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
   let hl = document.createElement('BR');
@@ -179,13 +279,13 @@ function assessmentsComplete() {
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
   t = createElementAndText("DIV" ,"Assessment 3:  " + scores.a3.total.toFixed(2) + "%", "instruction-text", wc);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
+} // displayScores
 
-  //sendResultsToQualtrics();
-
-  hl = document.createElement('BR');
-  hl.setAttribute("style", "margin-top: 10px; margin-bottom: 10px");
-  wc.appendChild(hl);
-  createButton("restartAssessment()", "Done", wc);
+function assessmentsComplete() {
+  //resetWCAll();
+  calculateScores();
+  sendResults();
+  displayScores();
 } // assessmentsCompleted
 
 var reload = ()=>{

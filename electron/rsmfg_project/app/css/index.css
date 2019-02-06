@@ -213,6 +213,12 @@ display: block;
     color: white;
 }
 
+.notification {
+  padding: 20px;
+  background-color: yellow;
+  color: black;
+}
+
 .closebtn {
     margin-left: 15px;
     color: white;
