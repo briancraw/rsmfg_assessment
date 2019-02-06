@@ -43,8 +43,8 @@ int runAssessment3() {
   Serial.println("Start of Assessment 3");
 
   if (HEADLESS) {
-    delay(300000);
-    return (99.99);
+    delay(30);
+    return (9);
   }
   
   // setup PWMs

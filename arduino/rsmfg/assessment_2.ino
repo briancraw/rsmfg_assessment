@@ -39,8 +39,8 @@ int runAssessment2() {
   Serial.println("Start of Assessment 2");
 
   if (HEADLESS) {
-    delay(300000);
-    return (25.678);
+    delay(30);
+    return (6);
   }
 
   digitalWrite(ASSESS_2_BTN_LED_1, HIGH);

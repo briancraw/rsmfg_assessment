@@ -11,8 +11,8 @@
 #define RSMFG_H
 
 #define DEBUG false
-#define HEADLESS false
-#define VERSION "1.0"
+#define HEADLESS true
+#define VERSION "1.0.0"
 #define BAUD 9600
 
 #define PASS true

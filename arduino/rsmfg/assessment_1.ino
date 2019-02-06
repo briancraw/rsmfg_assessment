@@ -37,7 +37,7 @@ int runAssessment1A() {
 
   if (HEADLESS) {
     delay(50);
-    return (75.75);
+    return (3);
   }
 
   digitalWrite(ASSESS_1_PUZZLE_BTN_LED_1, HIGH);
@@ -96,7 +96,7 @@ int runAssessment1B() {
 
   if (HEADLESS) {
     delay(50);
-    return (50.00);
+    return (4);
   }
   
   // optionally start a timer

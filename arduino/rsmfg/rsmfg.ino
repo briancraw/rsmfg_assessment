@@ -29,11 +29,16 @@ void setup() {
   DEBUG("Configuring pins...");
   initializePins();
   DEBUG("Pins configured");
+  //pinMode(LED_BUILTIN, OUTPUT);
 } // setup
 
 void(*resetFunc)(void) = 0; // declare reset function at address 0x0
 
-void loop() {
+void loop() {  
+  //digitalWrite(LED_BUILTIN, HIGH);
+  //delay(1000);
+  //digitalWrite(LED_BUILTIN, LOW);
+  //delay(1000);
   char *buffer;
   buffer = readSerial();
   if (commandReady == true) { exec(buffer); }
