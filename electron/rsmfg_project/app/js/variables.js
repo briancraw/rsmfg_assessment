@@ -7,7 +7,12 @@
   Revision Comments:
   02/05/2018 - Initial version.
 */
-
+/*
+const electron = require("electron");
+const {autoUpdater} = require("electron-updater");
+const path = require("path");
+const url = require("url");
+*/
 var TABLE_CONNECTED = false;
 
 var NO_TABLE = false;
@@ -72,7 +77,15 @@ var remainingTime = {
   'minutes': 0,
   'seconds': 0
 };
-var waiting = true;
+//var waiting = true;
+
+var currentTableVersion = "";
+const latestTableVersionMaj = "2";
+const latestTableVersionMid = "0";
+const latestTableVersionMin = "0";
+var updateTable = false;
+//localStorage["tableUpdated"] = false;
+
 var firstName = 'First Name';
 var lastName = 'Last Name';
 var ssn = 'Last 4 digits of SSN';

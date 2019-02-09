@@ -8,8 +8,6 @@
   02/05/2018 - Initial version.
 */
 
-//const ipcRenderer = require('electron').ipcRenderer;
-
 function reportDownloadInProgress() {
   let notifDiv;
   notifDiv = document.getElementById("notifMessage");
@@ -30,7 +28,18 @@ ipcRenderer.on('updateAvailable', function(event, text) {
   reportDownloadInProgress();
  });
 
-// make the serial connection
+
+ ipcRenderer.on('programTable', function(event, text) {
+   if (updateTable) {
+     port.close(programTable(portName));    
+   }
+ });
+
+ipcRenderer.on('closeSerial', function(event, text) {
+  port.close(programTable(portName));
+  //port.close();
+});
+
 connectToTable();
 
 const isDev = require('electron-is-dev');

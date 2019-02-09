@@ -7,6 +7,8 @@
   Revision Comments:
   02/05/2018 - Initial version.
 */
+//const { session }  = require('electron');
+const session = require('electron').remote.session;
 
 var currentState = STATES.IDLE;
 var nextState = STATES.IDLE;
@@ -55,12 +57,47 @@ function parseSerial(data) {
 }
 
 const responseRegExp = /(?<cmd>\w+):? ?(?<resp>.*)/;
+const tableVersionRegExp = /Starting RSMFG skills assessment test version (?<tableVersionMaj>\d+)\.(?<tableVersionMid>\d+)\.(?<tableVersionMin>\d+)/;
+
+function checkForTableUpdate(str) {
+    if (match = tableVersionRegExp.exec(str)) {
+      let maj = match.groups.tableVersionMaj;
+      let mid = match.groups.tableVersionMid;
+      let min = match.groups.tableVersionMin;
+      currentTableVersion = maj.concat(mid, min);
+      if (latestTableVersionMaj > maj) {
+        updateTable = true;
+      } else if (latestTableVersionMid > mid) {
+        updateTable = true;
+      } else if (latestTableVersionMin > min) {
+        updateTable = true;
+      }
+      console.log("Current Table Version: " + maj + "." + mid + "." + min);
+      console.log("Latest Table Version: " + latestTableVersionMaj + "." + latestTableVersionMid + "." + latestTableVersionMin);
+
+      /*
+      var cookie = {name: "hello world", value: 'true'};
+      session.defaultSession.cookies.set(cookie, (err) => {if (err) console.log(err)})
+
+      var test1 =  session.defaultSession.cookies.get({name: "hello world"});
+
+      console.log("COOKIE: " + test1)
+      */
+      if (updateTable == true) {
+        programTable(portName);
+      } else {
+        console.log("Table is up to date");
+      }
+    } // expre match?
+} // checkForTableUpdate()
 
 function processState(data) {
   let match;
   let d = data.trim();
   console.log(currentState + ": " + d);
   nextState = currentState;
+
+  checkForTableUpdate(d);
 
   switch (currentState) {
     case STATES.IDLE:

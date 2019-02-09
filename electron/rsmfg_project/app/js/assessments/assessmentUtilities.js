@@ -9,6 +9,7 @@
 */
 
 const {getCurrentWindow, globalShortcut} = require('electron').remote;
+const {fs} = require('fs');
 
 function captureTime(assessment) {
   switch (assessment) {
@@ -204,6 +205,10 @@ function reportUploadFailed() {
 
     infoHeading.appendChild(btnDiv);
   }
+
+  // store results to a local file
+
+
 } //reportUploadFailed
 
 function displayUploadSuccessMessage() {
@@ -226,19 +231,19 @@ function retryUpload(count) {
   for (retryCount = 0; retryCount < count; retryCount++) {
     p = p.then(_ => new Promise(resolve =>
       setTimeout(function() {
-      sendResultsToQualtrics()
-      .then(function(r) {
-        successful = true;
-        displayUploadSuccessMessage();
-        console.log("Uploaded results on retry attempt #" + retryCount);
-        retryCount = count;
-      })
-      .catch(function(r) {
-        successful = false;
-        reportUploadFailed();
-        console.log("Failed to upload on retry attempt #" + retryCount);
-      })
-    }, 2000)
+        sendResultsToQualtrics()
+        .then(function(r) {
+          successful = true;
+          displayUploadSuccessMessage();
+          console.log("Uploaded results on retry attempt #" + retryCount);
+          retryCount = count;
+        })
+        .catch(function(r) {
+          successful = false;
+          reportUploadFailed();
+          console.log("Failed to upload on retry attempt #" + retryCount);
+        })
+      }, 2000)
   ));
     if (successful == true) {break;}
   }

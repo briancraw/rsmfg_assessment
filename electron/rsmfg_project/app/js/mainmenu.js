@@ -108,19 +108,25 @@ const template = [
       }
     ]
   },
-  /*
+
   {
     label: "Serial",
     submenu: [
       {
-        label: 'Connect To Table',
+        label: 'Program Table',
         click(item, focusedWindow) {
-          if (focusedWindow) focusedWindow.webContents.send('connectToAssessmentTable', null);
+          if (focusedWindow) focusedWindow.webContents.send('programTable', null);
+        }
+      },
+      {
+        label: 'Close Serial',
+        click(item, focusedWindow) {
+          if (focusedWindow) focusedWindow.webContents.send('closeSerial', null);
         }
       },
     ]
   },
-  */
+
   {
     role: 'Help',
     submenu: [

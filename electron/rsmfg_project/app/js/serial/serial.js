@@ -12,6 +12,8 @@ var {ipcRenderer, remote} = require('electron');
 var rdyForResults = false;
 
 var port;
+var portName = null;
+
 var SerialPort = require('serialport');
 var parsers = SerialPort.parsers;
 
@@ -19,7 +21,7 @@ function connectToTable() {
   connectToTablePromise()
     .then(function(r) {
       clearNotConnected();
-      console.log("Connected to Assessment Table Port " + r.portName);
+      console.log("Connected to Assessment Table Port " + portName);
       TABLE_CONNECTED = true;
     })
     .catch(function (r) {
@@ -28,22 +30,21 @@ function connectToTable() {
     });
 } // connectToTable()
 
-function connectToTablePromise() {
+function connectToTablePromise(baud = 9600) {
     return new Promise(function(resolve, reject) {
-      let portName = null;
-      console.log("connectToTablePromise: ");
+      //let portName = null;
       SerialPort.list(function (err, ports) {
         ports.forEach(function(port) {
           console.log("Port " + port.comName + ", Vendor " + port.vendorId + ", Manufacturer " + port.manufacturer);
           if ((port.vendorId == '2341') || (typeof port.manufacturer !== 'undefined' && port.manufacturer.includes("Arduino LLC"))) {
             portName = port.comName;
-            console.log("PORT " + portName + " DETECTED");
           }
         });
 
         if (portName != null) {
+          console.log("Connecting to " + portName);
           port = new SerialPort(portName, {
-            baudRate: 9600
+            baudRate: baud
           });
           const parser = new parsers.Readline({ delimiter: '\n' });
 
@@ -52,9 +53,7 @@ function connectToTablePromise() {
 
           port.on("open", showPortOpen);
           port.on("close", showPortClose);
-          port.on('error', function(err) {
-            console.log('SerialPort Error: ', err.message)
-          });
+          port.on('error', showError);
 
           let serialInfo = {connected: true, portName: portName, ports: ports};
           resolve(serialInfo);
@@ -66,10 +65,58 @@ function connectToTablePromise() {
     });
 } // connectToTablePromise()
 
+function closePortPromise() {
+  return new Promise(function (resolve, reject) {
+    port.close();
+    resolve(true);
+  });
+} // closePortPromise()
+
+function programTable(portName) {
+  closePortPromise()
+  .then(
+    programTablePromise(portName)
+   .then(function(r) {
+      console.log("Table reprogrammed.  Reloading...")
+      reload();
+    })
+    .catch(function (r) {
+      console.log(r.message);
+    })
+  );
+} //programTable()
+
+function programTablePromise(portName) {
+  return new Promise(function (resolve, reject) {
+    let {execFile} = require('child_process');
+    let path = require("path");
+  //  let hexfile = path.join(__dirname, '../', 'build', 'rsmfg_blink.ino.hex');
+  //  let hexfile = path.join(__dirname, '../', 'build', 'rsmfg_blink_fast.ino.hex');
+    let hexfile = path.join(__dirname, '../', 'build', 'rsmfg_2_0_0.ino.hex');
+    let avrdudeCmd = path.join(__dirname, '../', 'build', 'avrdude');
+    let avrConf = path.join(__dirname, '../', 'build', 'avrdude.conf');
+    let avrConfOpt = "-C"+avrConf;
+    let flashOpt = "-Uflash:w:"+hexfile+":i";
+    let portOpt = "";
+
+    if (portName != "") {
+      portOpt = "-P"+portName;
+      console.log("Programming Table...");
+      const child = execFile(avrdudeCmd, ['-v', '-patmega2560', '-cwiring', portOpt,  '-b115200', '-D', flashOpt, avrConfOpt], (err, stdout, stderr) => {
+        if (err) {
+          reject(err);
+          console.log(err);
+        }
+        console.log(stdout.toString());
+        resolve(true);
+      });
+    }
+  }); // promise
+} // programTable
+
 ipcRenderer.on('connectToAssessmentTable', (event, arg) => {
   connectToTable();
 });
-
 
 function sendSerial(command) {
   console.log("Sending "+command);
@@ -77,18 +124,18 @@ function sendSerial(command) {
 }
 
 function showPortClose() {
-console.log("USB Connection Lost: ");
-reportNotConnected();
+  console.log("USB Connection Lost: ");
+  TABLE_CONNECTED = false;
+  reportNotConnected();
 }
 
 function showError(error) {
-console.log("Serial port error: " + error);
+  console.log("Serial port error: " + error);
 }
 
 function showPortOpen() {
-console.log("USB Port Succesfully Opened");
+  console.log("USB Port Succesfully Opened");
 }
-
 
 function serialDebugBox(text) {
   let formDiv = document.createElement("DIV");
