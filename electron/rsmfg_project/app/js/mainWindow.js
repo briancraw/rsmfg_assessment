@@ -30,9 +30,7 @@ ipcRenderer.on('updateAvailable', function(event, text) {
 
 
  ipcRenderer.on('programTable', function(event, text) {
-   if (updateTable) {
-     port.close(programTable(portName));    
-   }
+     port.close(programTable(portName));
  });
 
 ipcRenderer.on('closeSerial', function(event, text) {

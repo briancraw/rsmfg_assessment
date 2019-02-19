@@ -22,7 +22,18 @@ function connectToTable() {
     .then(function(r) {
       clearNotConnected();
       console.log("Connected to Assessment Table Port " + portName);
-      TABLE_CONNECTED = true;
+    //  TABLE_CONNECTED = true;
+/*
+      storeResultsLocally({
+            "First":sessionStorage[firstName],
+            "Last":sessionStorage[lastName],
+            "SSN":sessionStorage[ssn],
+            "EmployeeNumber":sessionStorage[employeeNum],
+            "AssemblyScore":scores.a1.total.toString(),
+            "InspectionScore":scores.a2.total.toString(),
+            "TroubleshootingScore":scores.a3.total.toString()
+          });
+*/
     })
     .catch(function (r) {
       console.log(r.message);
@@ -91,8 +102,8 @@ function programTablePromise(portName) {
     let {execFile} = require('child_process');
     let path = require("path");
   //  let hexfile = path.join(__dirname, '../', 'build', 'rsmfg_blink.ino.hex');
-  //  let hexfile = path.join(__dirname, '../', 'build', 'rsmfg_blink_fast.ino.hex');
-    let hexfile = path.join(__dirname, '../', 'build', 'rsmfg_2_0_0.ino.hex');
+    //let hexfile = path.join(__dirname, '../', 'build', 'rsmfg_blink_fast.ino.hex');
+    let hexfile = path.join(__dirname, '../', 'build', 'rsmfg.ino.hex');
     let avrdudeCmd = path.join(__dirname, '../', 'build', 'avrdude');
     let avrConf = path.join(__dirname, '../', 'build', 'avrdude.conf');
     let avrConfOpt = "-C"+avrConf;
@@ -125,7 +136,7 @@ function sendSerial(command) {
 
 function showPortClose() {
   console.log("USB Connection Lost: ");
-  TABLE_CONNECTED = false;
+  //TABLE_CONNECTED = false;
   reportNotConnected();
 }
 

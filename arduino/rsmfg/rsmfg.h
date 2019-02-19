@@ -10,9 +10,11 @@
 #ifndef RSMFG_H
 #define RSMFG_H
 
-#define DEBUG false
-#define HEADLESS true
-#define VERSION "1.0.0"
+#define DEBUG true
+#define HEADLESS false
+#define BLINK_MODE false
+#define DEBUG_A3 false
+#define VERSION "1.0.2"
 #define BAUD 9600
 
 #define PASS true

@@ -52,12 +52,13 @@ var scores = {
 } // scores
 
 function parseSerial(data) {
-  console.log("Received: " + data);
+//  console.log("Received: " + data);
   processState(data);
 }
 
 const responseRegExp = /(?<cmd>\w+):? ?(?<resp>.*)/;
 const tableVersionRegExp = /Starting RSMFG skills assessment test version (?<tableVersionMaj>\d+)\.(?<tableVersionMid>\d+)\.(?<tableVersionMin>\d+)/;
+const pwmRegExp = /(?<id>\d+):PWM:(?<val>\w+)/;
 
 function checkForTableUpdate(str) {
     if (match = tableVersionRegExp.exec(str)) {
@@ -75,14 +76,6 @@ function checkForTableUpdate(str) {
       console.log("Current Table Version: " + maj + "." + mid + "." + min);
       console.log("Latest Table Version: " + latestTableVersionMaj + "." + latestTableVersionMid + "." + latestTableVersionMin);
 
-      /*
-      var cookie = {name: "hello world", value: 'true'};
-      session.defaultSession.cookies.set(cookie, (err) => {if (err) console.log(err)})
-
-      var test1 =  session.defaultSession.cookies.get({name: "hello world"});
-
-      console.log("COOKIE: " + test1)
-      */
       if (updateTable == true) {
         programTable(portName);
       } else {
@@ -97,7 +90,7 @@ function processState(data) {
   console.log(currentState + ": " + d);
   nextState = currentState;
 
-  checkForTableUpdate(d);
+  //checkForTableUpdate(d);
 
   switch (currentState) {
     case STATES.IDLE:
@@ -207,6 +200,11 @@ function processState(data) {
           sendSerial(CMDS.RST);
         }
       }
+      /*
+      if (match = pwmRegExp.exec(d)) {
+        updateA3Status("w"+match.groups.id, match.groups.val);
+      }
+      */
       break;
     case STATES.COMPLETE:
       if (d == CMDS.RST) {

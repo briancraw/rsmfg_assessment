@@ -34,11 +34,11 @@ function assessment2Questions() {
   t.setAttribute("style", "font-size: 18px; text-align:center");
   preformContent.appendChild(document.createElement("BR"));
 
-  createSelectTextElement("Left Pocket ", formName);
+  createSelectTextElement("Pocket #1", formName);
   createFormField("leftPocketCount", formEntry);
-  createSelectTextElement("Center Pocket ", formName);
+  createSelectTextElement("Pocket #2", formName);
   createFormField("centerPocketCount", formEntry);
-  createSelectTextElement("Right Pocket ", formName);
+  createSelectTextElement("Pocket #3", formName);
   createFormField("rightPocketCount", formEntry);
 
   createButton("startTableAssessment2()", "NEXT", wc);

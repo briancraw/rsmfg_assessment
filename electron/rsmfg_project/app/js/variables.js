@@ -13,9 +13,14 @@ const {autoUpdater} = require("electron-updater");
 const path = require("path");
 const url = require("url");
 */
-var TABLE_CONNECTED = false;
-
+//var TABLE_CONNECTED = false;
 var NO_TABLE = false;
+var currentTableVersion = "";
+const latestTableVersionMaj = "1";
+const latestTableVersionMid = "0";
+const latestTableVersionMin = "2";
+var updateTable = false;
+
 var SERIAL_DEBUG = false;
 
 var MINUTE = 60000; // 1 minute;
@@ -79,11 +84,6 @@ var remainingTime = {
 };
 //var waiting = true;
 
-var currentTableVersion = "";
-const latestTableVersionMaj = "2";
-const latestTableVersionMid = "0";
-const latestTableVersionMin = "0";
-var updateTable = false;
 //localStorage["tableUpdated"] = false;
 
 var firstName = 'First Name';

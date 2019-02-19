@@ -31,6 +31,7 @@
  */
 int runAssessment3() {
   int i = 0;
+  int j = 0;
   int pwmValue = 0;
   bool matchingPWMsDetected = false;
   int buttonVal = HIGH;
@@ -42,8 +43,24 @@ int runAssessment3() {
 
   Serial.println("Start of Assessment 3");
 
+//const int assessment3InputPinPWMValue[5] = {256, 512, 768, 1024, 1280};
   if (HEADLESS) {
-    delay(30);
+    i = 1;
+    j = 0;
+    
+    while(j < 2) {
+      delay(1000);
+      DEBUGNOLN(i); DEBUGNOLN(":PWM:"); DEBUG("green");
+      delay(1000);
+      DEBUGNOLN(i); DEBUGNOLN(":PWM:"); DEBUG("red");
+      if (i == 5) {
+        i = 1;
+      } else {
+        i++;
+      }
+      j++;
+    }
+    //delay(30);
     return (9);
   }
   
@@ -76,36 +93,57 @@ int runAssessment3() {
       //   w -> Rb
       //   k -> Rk
 
-      DEBUGNOLN(i);
-      DEBUGNOLN(": PWM VALUE: ");
-      DEBUG(pwmValue);
-  
-      if (i == R && ((assessment3InputPinPWMValue[Y] <= (pwmValue*1.1)) && 
-                     (assessment3InputPinPWMValue[Y] >= (pwmValue*0.9)))) {
-        DEBUGNOLN("R ");
-        a3Result++;
+      if (0) {
+        DEBUGNOLN(i);
+        DEBUGNOLN(":PWM:");
+        DEBUG(pwmValue);
       }
-      if (i == B && ((assessment3InputPinPWMValue[R] <= (pwmValue*1.1)) && 
-                     (assessment3InputPinPWMValue[R] >= (pwmValue*0.9)))) {
-        DEBUGNOLN("B ");
-        a3Result++;
+
+      if (i == R) {
+        if ((assessment3InputPinPWMValue[Y] <= (pwmValue*1.1)) && 
+            (assessment3InputPinPWMValue[Y] >= (pwmValue*0.9))) {
+          DEBUGNOLN(1); DEBUGNOLN(":PWM:"); DEBUG("green");
+          a3Result++;
+        } else {
+          DEBUGNOLN(1); DEBUGNOLN(":PWM:"); DEBUG("red");              
+        }
       }
-      if (i == Y && ((assessment3InputPinPWMValue[W] <= (pwmValue*1.1)) && 
-                     (assessment3InputPinPWMValue[W] >= (pwmValue*0.9)))) {
-        DEBUGNOLN("Y ");
-        a3Result++;
+      if (i == B) {
+        if ((assessment3InputPinPWMValue[R] <= (pwmValue*1.1)) && 
+            (assessment3InputPinPWMValue[R] >= (pwmValue*0.9))) {
+          DEBUGNOLN(2); DEBUGNOLN(":PWM:"); DEBUG("green");
+          a3Result++;
+        } else {
+          DEBUGNOLN(2); DEBUGNOLN(":PWM:"); DEBUG("red");
+        }
       }
-      if (i == W && ((assessment3InputPinPWMValue[B] <= (pwmValue*1.1)) && 
-                     (assessment3InputPinPWMValue[B] >= (pwmValue*0.9)))) {
-        DEBUGNOLN("W ");
-        a3Result++;
+      if (i == Y) {
+        if ((assessment3InputPinPWMValue[W] <= (pwmValue*1.1)) && 
+            (assessment3InputPinPWMValue[W] >= (pwmValue*0.9))) {
+          DEBUGNOLN(3); DEBUGNOLN(":PWM:"); DEBUG("green");
+          a3Result++;
+        } else {
+          DEBUGNOLN(3); DEBUGNOLN(":PWM:"); DEBUG("red");
+        }
       }
-      if (i == K && ((assessment3InputPinPWMValue[K] <= (pwmValue*1.1)) && 
-                     (assessment3InputPinPWMValue[K] >= (pwmValue*0.9)))) {
-        DEBUGNOLN("K ");
-        a3Result++;
+      if (i == W) {
+        if ((assessment3InputPinPWMValue[B] <= (pwmValue*1.1)) && 
+            (assessment3InputPinPWMValue[B] >= (pwmValue*0.9))) {
+          DEBUGNOLN(4); DEBUGNOLN(":PWM:"); DEBUG("green");
+          a3Result++;
+        } else {
+          DEBUGNOLN(4); DEBUGNOLN(":PWM:"); DEBUG("red");        
+        }
       }
-      DEBUG("");
+      if (i == K) {
+        if ((assessment3InputPinPWMValue[K] <= (pwmValue*1.1)) && 
+            (assessment3InputPinPWMValue[K] >= (pwmValue*0.9))) {
+          DEBUGNOLN(5); DEBUGNOLN(":PWM:"); DEBUG("green");
+          a3Result++;
+        } else {
+          DEBUGNOLN(5); DEBUGNOLN(":PWM:"); DEBUG("red");
+        }
+      }
     } // check cables
     
     buttonVal = readA3Button();
