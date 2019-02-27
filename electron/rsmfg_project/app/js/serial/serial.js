@@ -103,9 +103,11 @@ function programTablePromise(portName) {
     let path = require("path");
   //  let hexfile = path.join(__dirname, '../', 'build', 'rsmfg_blink.ino.hex');
     //let hexfile = path.join(__dirname, '../', 'build', 'rsmfg_blink_fast.ino.hex');
-    let hexfile = path.join(__dirname, '../', 'build', 'rsmfg.ino.hex');
-    let avrdudeCmd = path.join(__dirname, '../', 'build', 'avrdude');
-    let avrConf = path.join(__dirname, '../', 'build', 'avrdude.conf');
+    let appFolder = path.resolve(process.execPath, '..');
+    cwd = path.join(appFolder, 'build');
+    let hexfile = path.join(cwd, 'rsmfg.ino.hex');
+    let avrdudeCmd = path.join(cwd, 'avrdude.exe');
+    let avrConf = path.join(cwd, 'avrdude.conf');
     let avrConfOpt = "-C"+avrConf;
     let flashOpt = "-Uflash:w:"+hexfile+":i";
     let portOpt = "";

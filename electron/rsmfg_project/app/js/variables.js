@@ -91,12 +91,14 @@ var lastName = 'Last Name';
 var ssn = 'Last 4 digits of SSN';
 var date = 'Date (MM/DD/YYYY)';
 var employeeNum = 'Employee Number';
+var branch = "Branch Number";
 
 sessionStorage[firstName] = "";
 sessionStorage[lastName] = "";
 sessionStorage[ssn] = "";
 sessionStorage[date] = "";
 sessionStorage[employeeNum] = "";
+sessionStorage[branch] = "";
 
 sessionStorage["BOM"] = "";
 sessionStorage["len"] = "";

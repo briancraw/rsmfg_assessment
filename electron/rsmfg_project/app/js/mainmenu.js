@@ -119,13 +119,13 @@ const template = [
           if (focusedWindow) focusedWindow.webContents.send('programTable', null);
         }
       },
-      */
       {
         label: 'Close Serial',
         click(item, focusedWindow) {
           if (focusedWindow) focusedWindow.webContents.send('closeSerial', null);
         }
       },
+      */
     ]
   },
 
