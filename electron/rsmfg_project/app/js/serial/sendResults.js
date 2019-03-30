@@ -11,7 +11,6 @@
 const request = require('request');
 var responseObject;
 
-
 function reportUploadFailed() {
   let alertDiv;
   alertDiv = document.getElementById("uploadMessage");
@@ -49,7 +48,6 @@ function reportUploadFailed() {
 
     infoHeading.appendChild(btnDiv);
   }
-
 } //reportUploadFailed
 
 function displayUploadSuccessMessage() {
@@ -81,9 +79,9 @@ function tryAtMost(retryCount, promise) {
     successful = false;
     reportUploadFailed();
     console.log("Failed to upload on retry attempt #" + retryCount);
-    setTimeout(function() {
+    //setTimeout(function() {
       tryAtMost(retryCount - 1, promise);
-    }, 2000);
+    //}, 2000);
     })
   }
 
@@ -106,29 +104,35 @@ function retryUpload(count) {
   let retryCount;
   let successful = false;
 
+  if (count == 0) {
+    return;
+  }
+
   let p = Promise.resolve();
-  for (retryCount = 0; retryCount < count; retryCount++) {
+//  for (retryCount = 0; retryCount < count; retryCount++) {
     p = p.then(_ => new Promise(resolve =>
       setTimeout(function() {
         sendResultsToQualtrics()
         .then(function(r) {
           successful = true;
           displayUploadSuccessMessage();
-          console.log("Uploaded results on retry attempt #" + retryCount);
+          console.log("Uploaded results on retry attempt #" + count);
         })
         .catch(function(r) {
           successful = false;
           reportUploadFailed();
-          console.log("Failed to upload on retry attempt #" + retryCount);
+          console.log("Failed to upload on retry attempt #" + count);
+          retryUpload(--count);
         })
       }, 2000)
   ));
-    if (successful == true) {break;}
-  }
+  //  if (successful == true) {break;}
+  //}
 } // retryUpload
 
 function sendResults() {
   let successful = false;
+  setTimeout(function() {
   sendResultsToQualtrics()
     .then(function(r) {
       successful = true;
@@ -136,11 +140,13 @@ function sendResults() {
       return true;
     })
     .catch(function(r) {
+      reportUploadFailed();
       console.log("Upload error response: " + r);
       if (successful == false) {
         retryUpload(3);
       }
     })
+  }, 1000)
 } // sendResults()
 
 function sendResultsToQualtrics() {
@@ -167,7 +173,8 @@ function sendResultsToQualtrics() {
       "EmployeeNumber":sessionStorage[employeeNum],
       "AssemblyScore":scores.a1.total.toString(),
       "InspectionScore":scores.a2.total.toString(),
-      "TroubleshootingScore":scores.a3.total.toString()
+      "TroubleshootingScore":scores.a3.total.toString(),
+      "BranchNumber":sessionStorage[branch]
     }
   };
 
@@ -179,13 +186,19 @@ function sendResultsToQualtrics() {
     method: 'POST'
   };
 
+  var timer = setTimeout(function() {
+    reject();
+  }, 15000);
+
   fetch(baseUrl, createSessionParams)
   // create user session
   .then(function(r) {
     console.log("create r.status: " + r.status);
     if (r.status == 201) {
       return r.json();
-    }
+    } //else {
+    //  reject (r.json);
+    // }
   })
   .then(function(r) {
       sessionId = r.result.sessionId;
@@ -215,8 +228,9 @@ function sendResultsToQualtrics() {
 
       let result = r.json().then(function(r) {console.log("Update Session Result: "+ JSON.stringify(r));});
       resolve(result);
-    } else if (r.status == 404) {
-      reject(reason);
+  //  } else if (r.status == 404) {
+    } else {
+      reject();
     }
   })
   .catch(function(e) {

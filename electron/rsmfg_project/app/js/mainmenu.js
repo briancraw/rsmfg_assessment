@@ -108,18 +108,16 @@ const template = [
       }
     ]
   },
-
+/*
   {
     label: "Serial",
     submenu: [
-      /*
       {
         label: 'Program Table',
         click(item, focusedWindow) {
           if (focusedWindow) focusedWindow.webContents.send('programTable', null);
         }
       },
-      */
       {
         label: 'Close Serial',
         click(item, focusedWindow) {
@@ -128,6 +126,7 @@ const template = [
       },
     ]
   },
+*/
 
   {
     role: 'Help',
