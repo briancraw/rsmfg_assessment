@@ -14,7 +14,7 @@
 #define HEADLESS false
 #define BLINK_MODE false
 #define DEBUG_A3 false
-#define VERSION "1.0.2"
+#define VERSION "1.0.1"
 #define BAUD 9600
 
 #define PASS true

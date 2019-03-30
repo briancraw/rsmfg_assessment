@@ -90,7 +90,7 @@ function processState(data) {
   console.log(currentState + ": " + d);
   nextState = currentState;
 
-  checkForTableUpdate(d);
+  //checkForTableUpdate(d);
 
   switch (currentState) {
     case STATES.IDLE:
