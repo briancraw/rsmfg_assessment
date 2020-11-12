@@ -100,7 +100,7 @@ function calculateA1Score() {
   console.log("A1 ASSEMBLY SCORE: " +  scores.a1.a1b.tableScore + " of 4, TOTAL: " + score);
 
   let a1TotalTime = scores.a1.a1b.tableTime+scores.a1.a1a.tableTime
-  let a1TimeScore = getTimeScore(a1TotalTime);
+  let a1TimeScore = getTimeScore(a1TotalTime, A1_TIMER);
   a1TimeScore = (a1TimeScore/100) * A1_TOTAL_TIME_PTS;
   score = score + a1TimeScore;
   console.log ("A1 TIME SCORE: " + a1TimeScore + " of " + A1_TOTAL_TIME_PTS + ", TOTAL " + score);
@@ -137,7 +137,7 @@ function calculateA2Score() {
   score = score + scores.a2.tableScore;
   console.log("A2 TABLE SCORE: " +  scores.a2.tableScore + " of 7, TOTAL: " + score);
 
-  let a2TimeScore = getTimeScore(scores.a2.tableTime);
+  let a2TimeScore = getTimeScore(scores.a2.tableTime, A2_TIMER);
   a2TimeScore = (a2TimeScore/100) * A2_TOTAL_TIME_PTS;
   score = score + a2TimeScore;
   console.log("A2 TIME SCORE: " + a2TimeScore + " of " + A2_TOTAL_TIME_PTS + ", TOTAL: " + score);
@@ -151,7 +151,7 @@ function calculateA3Score() {
   // A3 has 9 available points
   score = score + scores.a3.tableScore;
   console.log("A3 TABLE SCORE: " + scores.a3.tableScore + " of 9, TOTAL: " + score);
-  let a3TimeScore = getTimeScore(scores.a3.tableTime);
+  let a3TimeScore = getTimeScore(scores.a3.tableTime, A3_TIMER);
   a3TimeScore = (a3TimeScore/100) * A3_TOTAL_TIME_PTS;
   score = score + a3TimeScore;
   console.log("A3 TIME SCORE: " + a3TimeScore + " of " + A3_TOTAL_TIME_PTS + ", TOTAL: " + score);
@@ -159,28 +159,52 @@ function calculateA3Score() {
   return score;
 } // calculateA3Score
 
-function getTimeScore(val) {
-  if (val < MINUTE*3) { // 3 minutes
+// 100-70% of time = 100% of score
+// 70-40% of time = 50% of score
+// 40-10% of time = 33.33% of score
+// 10-0% of time = 10% of score
+// <=0% of time = 0% of score
+// time: time in minutes it took user to complete assessment
+// allowed_time: total time allowed for assessment
+function getTimeScore(time, allowed_time) {
+  if (time < (0.3*allowed_time)) {
+    console.log("TIME: "+time+": "+(0.3*allowed_time));
     return 100;
-  } else if (val < MINUTE*6) { // 6 minutes
+  } else if (time < (0.6*allowed_time)) {
     return 50;
-  } else if (val < MINUTE*9) { // 9 minutes
+  } else if (time < (0.9*allowed_time)) {
     return 33.33;
-  } else if (val < MINUTE*10) { // 10 minutes
+  } else if (time < allowed_time) {
     return 10;
   } else {
     return 0;
   }
 } // getTimeScore
 
+/*
+function getTimeScore(val) {
+  if (val < MINUTE*1.5) { // 1.5 minutes
+    return 100;
+  } else if (val < MINUTE*3) { // 3 minutes
+    return 50;
+  } else if (val < MINUTE*4.5) { // 4.5 minutes
+    return 33.33;
+  } else if (val < MINUTE*5) { // 5 minutes
+    return 10;
+  } else {
+    return 0;
+  }
+} // getTimeScore
+*/
+
 function calculateScores() {
   // A1 Total
   let a1score = calculateA1Score();
   let a2score = calculateA2Score();
   let a3score = calculateA3Score();
-  scores.a1.total = (a1score/(A1_TOTAL_ASSESS_PTS + A1_TOTAL_TIME_PTS))*100;
-  scores.a2.total = (a2score/(A2_TOTAL_ASSESS_PTS + A2_TOTAL_TIME_PTS))*100;
-  scores.a3.total = (a3score/(A3_TOTAL_ASSESS_PTS + A3_TOTAL_TIME_PTS))*100;
+  scores.a1.total = Math.round((a1score/(A1_TOTAL_ASSESS_PTS + A1_TOTAL_TIME_PTS))*100);
+  scores.a2.total = Math.round((a2score/(A2_TOTAL_ASSESS_PTS + A2_TOTAL_TIME_PTS))*100);
+  scores.a3.total = Math.round((a3score/(A3_TOTAL_ASSESS_PTS + A3_TOTAL_TIME_PTS))*100);
 
   console.log ("A1.TOTAL (" + a1score + "/" + (A1_TOTAL_ASSESS_PTS + A1_TOTAL_TIME_PTS) + "): " + scores.a1.total);
   console.log ("A2.TOTAL (" + a2score + "/" + (A2_TOTAL_ASSESS_PTS + A2_TOTAL_TIME_PTS) + "): " + scores.a2.total);

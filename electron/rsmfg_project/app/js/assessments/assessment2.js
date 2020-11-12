@@ -13,13 +13,13 @@ function startAssessment2() {
 
   createCountdownTimer(A2_TIMER);
 
-  let t = createElementAndText("P", "Open the packet labeled \"Work Instruction Assessment 2\" \
-                                 located above the Assessment Table and follow the given instructions.",
+  let t = createElementAndText("P", "The instructions for \"Work Instruction Assessment 2\" are\
+                                     located above the Assessment Table.",
                            "instruction-text", infoHeading);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
   infoHeading.appendChild(document.createElement("HR"));
 
-  t = createElementAndText("P", "Sort the screws as described in step #1 in the instructions. Click NEXT to continue.",
+  t = createElementAndText("P", "Sort the screws as described in the Assessment #2 \"Step 1 - Sorting\" instructions. Click NEXT to continue.",
                                "instruction-text", preformContent);
   t.setAttribute("style", "font-size: 18px; text-align:center");
   preformContent.appendChild(document.createElement("BR"));
@@ -29,8 +29,9 @@ function startAssessment2() {
 function assessment2Questions() {
   resetWC();
 
-  let t = createElementAndText("P", "Inspect the screws as described in step #2 in the instructions.  Fill in the answers below and click NEXT to continue.",
-                               "instruction-text", preformContent);
+  let t = createElementAndText("P", "Inspect the screws as described in the Assessment #2 \"Step 2 - Inspection\" instructions.  \
+                                     Fill in the answers below and click NEXT to continue.",
+                                    "instruction-text", preformContent);
   t.setAttribute("style", "font-size: 18px; text-align:center");
   preformContent.appendChild(document.createElement("BR"));
 
@@ -49,7 +50,7 @@ function startTableAssessment2() {
 
   infoHeading.innerHTML = '';
   infoHeading.appendChild(document.createElement("HR"));
-  t = createElementAndText("P", "Follow the instructions from step #3 in the instruction packet label \"Work Instruction Assessment 2\".",
+  t = createElementAndText("P", "Follow the Assessment #2 \"Step 3 - Placement\" instructions.",
                            "instruction-text", infoHeading);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
 

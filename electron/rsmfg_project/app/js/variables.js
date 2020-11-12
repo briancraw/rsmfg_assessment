@@ -6,30 +6,26 @@
 
   Revision Comments:
   02/05/2018 - Initial version.
+  05/21/2019 - v2_2_1 - Changed timeouts.
+               A1: 8 minutes, A2: 7 minutes, A3: 4 minutes
 */
-/*
-const electron = require("electron");
-const {autoUpdater} = require("electron-updater");
-const path = require("path");
-const url = require("url");
-*/
-//var TABLE_CONNECTED = false;
 var NO_TABLE = false;
 var currentTableVersion = "";
 const latestTableVersionMaj = "1";
 const latestTableVersionMid = "0";
-const latestTableVersionMin = "2";
+const latestTableVersionMin = "1";
 var updateTable = false;
 
 var SERIAL_DEBUG = false;
 
 var MINUTE = 60000; // 1 minute;
-//var A1_TIMER = 20000;
-//var A2_TIMER = 20000;;
-//var A3_TIMER = 5000;
-var A1_TIMER = 10*MINUTE;
-var A2_TIMER = 10*MINUTE;
-var A3_TIMER = 10*MINUTE;
+var HALF_MINUTE = 30000; // 30 seconds
+var A1_TIME_IN_MINUTES = 8;
+var A2_TIME_IN_MINUTES = 7;
+var A3_TIME_IN_MINUTES = 4;
+var A1_TIMER = A1_TIME_IN_MINUTES*MINUTE;
+var A2_TIMER = A2_TIME_IN_MINUTES*MINUTE;
+var A3_TIMER = A3_TIME_IN_MINUTES*MINUTE;
 
 const ASSESSMENTS = {
   A1: "A1",

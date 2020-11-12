@@ -1,7 +1,7 @@
 {
   "name": "rsmfg-assessment-app",
   "productName": "ResourceMFG Assessment Application",
-  "version": "2.0.1",
+  "version": "2.3.0",
   "description": "ResourceMFG Practical Assembly Assessment",
   "main": "app/main.js",
   "repository": "https://github.com/briancraw/rsmfg_assessment",
@@ -18,7 +18,9 @@
     "win": {
       "icon": "build/icon.ico"
     },
-    "extraFiles": ["build/"]
+    "extraFiles": [
+      "build/"
+    ]
   },
   "author": "Brian Craw",
   "license": "ISC",

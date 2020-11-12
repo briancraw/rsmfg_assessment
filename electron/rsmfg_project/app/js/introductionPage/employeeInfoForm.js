@@ -112,6 +112,7 @@ function validateEntries() {
   } else if (!form_invalid){
     infoHeading.style.color = "black";
     document.getElementById("window-content").style.backgroundColor = "";
-    confirmTableLayoutPage();
+    //confirmTableLayoutPage();
+    assessment1StartPage();
   }
 } // validateEntries

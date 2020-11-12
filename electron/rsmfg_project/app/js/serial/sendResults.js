@@ -153,7 +153,8 @@ function sendResultsToQualtrics() {
 
   return new Promise(function(resolve, reject) {
   var sessionId;
-  let apiToken = "JIhVfX3JOiEV0ZX6J4YOmzvdH2P2IErW99Oz1sEp";
+  //let apiToken = "JIhVfX3JOiEV0ZX6J4YOmzvdH2P2IErW99Oz1sEp";
+  let apiToken = "ml8DtzuIaD8hKx6TnSCO8ch12no3RfPC2CnPx9CN";
   let surveyId = "SV_9nOLL07nZ2JBdKR";
   let baseUrl = "https://employbridge.az1.qualtrics.com/API/v3/surveys/" + surveyId + "/sessions";
   //baseUrl = "http://httpstat.us/404";
@@ -196,14 +197,15 @@ function sendResultsToQualtrics() {
     console.log("create r.status: " + r.status);
     if (r.status == 201) {
       return r.json();
-    } //else {
-    //  reject (r.json);
-    // }
+    } else {
+      reject("Failed to create session");
+    }
   })
   .then(function(r) {
       sessionId = r.result.sessionId;
       console.log("Session ID: " + sessionId);
-
+      console.log("Session creation results: " + JSON.stringify(r));
+/*
       baseUrl = "https://employbridge.az1.qualtrics.com/API/v3/surveys/" + surveyId + "/sessions/" + sessionId;
 
       data = {
@@ -219,7 +221,10 @@ function sendResultsToQualtrics() {
       };
 
       return fetch(baseUrl, updateSessionParams);
+      */
+      resolve();
   })
+  /*
   .then(function (r) {
     console.log("update r.status: " + r.status);
 
@@ -233,6 +238,7 @@ function sendResultsToQualtrics() {
       reject();
     }
   })
+  */
   .catch(function(e) {
     let reason = "There was an error with the upload: " + e;
     // store results to a local file

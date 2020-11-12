@@ -14,12 +14,11 @@ function startAssessment3() {
   createCountdownTimer(A3_TIMER);
   infoHeading.appendChild(document.createElement("HR"));
 
-  let t = createElementAndText("P", "Open the packet labeled \"Work Instruction Assessment 3\" \
-                                     located above the Assessment Table and  and follow the given instructions.",
+  let t = createElementAndText("P", "Follow the \"Work Instruction Assessment 3\" instructions\
+                                     located above the Assessment Table.",
                            "instruction-text", preformContent);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
 
-  //displayA3Status();
   startTableAssessment3();
 } // startAssessment3()
 

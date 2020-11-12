@@ -17,15 +17,15 @@ function assessment1StartPage() {
   t.setAttribute("style", "line-height: 2");
   let aul = document.createElement("UL");
   aul.setAttribute("style", "text-align: left");
-  t = createElementAndText("LI", "Assessment 1 is 10 minutes", "instructions-text", aul);
-  t = createElementAndText("LI", "Assessment 2 is 10 minutes", "instructions-text", aul);
-  t = createElementAndText("LI", "Assessment 3 is 10 minutes", "instructions-text", aul);
+  t = createElementAndText("LI", "Assessment 1 is "+A1_TIME_IN_MINUTES+" minutes", "instructions-text", aul);
+  t = createElementAndText("LI", "Assessment 2 is "+A2_TIME_IN_MINUTES+" minutes", "instructions-text", aul);
+  t = createElementAndText("LI", "Assessment 3 is "+A3_TIME_IN_MINUTES+" minutes", "instructions-text", aul);
   l.appendChild(aul);
   ol.appendChild(l);
   l = document.createElement("LI");
-  t = createElementAndText("P", 'Detailed instructions are contained in the packets labeled \
-                                 "Work Instruction Assessment 1, 2, or 3" attached to the Assessment Table.',
+  t = createElementAndText("P", 'Detailed instructions are located above the Assessment Table.',
                                  "instruction-text", l)
+
   t.setAttribute("style", "line-height: 2");
   ol.appendChild(l);
   l = document.createElement("LI");
@@ -45,9 +45,10 @@ function startAssessment1() {
   createCountdownTimer(A1_TIMER);
   processState(CMDS.SA1A);
 
-  let t = createElementAndText("P", "Open the packet labeled \"Work Instruction Assessment 1\" \
-                                 located above the Assessment Table and follow the given instructions.",
+  let t = createElementAndText("P", "The instructions for \"Work Instruction Assessment 1\" are\
+                                     located above the Assessment Table.",
                            "instruction-text", infoHeading);
+
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
   infoHeading.appendChild(document.createElement("HR"));
 
@@ -56,8 +57,11 @@ function startAssessment1() {
 
 function assessment1Questions() {
   resetWC();
-  t = createElementAndText("P", "Review the Bill of Materials, determine the total cost of materials,\
-                                     enter it in the box, and click NEXT to proceed to the next question.",
+//  Enter the calculated value in the box and click NEXT to proceed to the next question.",
+  t = createElementAndText("P", "Follow the Assessment #1 \"Step 1 - Bill of Material\" instructions.",
+                               "instruction-text", preformContent);
+  t.setAttribute("style", "font-size: 18px");
+  t = createElementAndText("P", "Enter the calculated value in the box and click NEXT to proceed to the next question.",
                                "instruction-text", preformContent);
   t.setAttribute("style", "font-size: 18px");
   preformContent.appendChild(document.createElement("BR"));
@@ -65,36 +69,6 @@ function assessment1Questions() {
 } // assessment1Questions
 
 function BOMQuestion() {
-  /*
-  let table = document.createElement("TABLE");
-  let rows = 7;
-  let cols = 4;
-  let r, c;
-  let tr, td, th, type;
-
-  table.innerHTML = '\
-      <tr>\
-        <th id="r0" colspan=4 class="theader-row">BILL OF MATERIALS - PART NUMBER 1689</th>\
-      </tr>\
-      <tr>\
-        <th>ITEM</th>\
-        <th>QUANTITY</th>\
-        <th>DESCRIPTION</th>\
-        <th>COST/EACH</th>\
-      </tr>\
-      <tr><td>1</td><td>2</td><td>WHITE PUZZLE BLOCK 8"</td><td>$1.50</td></tr>\
-      <tr><td>2</td><td>1</td><td>WHITE PUZZLE BLOCK 6"</td><td>$0.75</td></tr>\
-      <tr><td>3</td><td>2</td><td>3/8" X 4" BOLT</td><td>$0.35</td></tr>\
-      <tr><td>4</td><td>2</td><td>3/8" X 1.5" WASHER</td><td>$0.15</td></tr>\
-      <tr><td>5</td><td>2</td><td>3/8" X .875" WASHER</td><td>$0.03</td></tr>\
-      <tr><td>6</td><td>2</td><td>3/8" NUT</td><td>$0.05</td></tr>'
-
-  table.setAttribute("align", "center");
-  table.setAttribute("text-align", "center");
-
-  preformContent.appendChild(table);
-  preformContent.appendChild(document.createElement("BR"));
-*/
   createSelectTextElement("Total Material Cost($)  ", formName);
   createFormField("BOM", formEntry);
 
@@ -106,12 +80,12 @@ function measurementQuestion() {
   console.log("measurementQuestion");
   resetWC();
   infoHeading.innerHTML = "";
-  let t = createElementAndText("P", "Continue to follow the instructions from the packet labeled \"Work Instruction Assessment 1\" step #1.",
+  let t = createElementAndText("P", "Follow the Assessment #1 \"Step 2 - Measurements\" instructions.",
                            "instruction-text", infoHeading);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
   infoHeading.appendChild(document.createElement("HR"));
 
-  preformContent.innerHTML = '<p class="instruction-text">Enter the length and two width measurements from step #1 below.  \
+  preformContent.innerHTML = '<p class="instruction-text">Enter the length and two width measurements below.  \
                                  The drop-down box is used to select the measurement to the nearest one \
                                  eigth of an inch.<br>For example: If the measurement were 5 7/8 inches then 5 would \
                                  be entered into the first box and 7/8 would be selected from the drop-down.</p>';
@@ -164,7 +138,7 @@ function startTableAssessment1A() {
 
   infoHeading.innerHTML = "";
   infoHeading.appendChild(document.createElement("HR"));
-  let t = createElementAndText("P", "Continue to follow the instructions from the packet labeled \"Work Instruction Assessment 1\" step #2.",
+  let t = createElementAndText("P", "Follow the Assessment #1 \"Step 3 - Placement\" instructions.",
                            "instruction-text", infoHeading);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
 
@@ -180,7 +154,7 @@ function startTableAssessment1B() {
 
   infoHeading.innerHTML = '';
   infoHeading.appendChild(document.createElement("HR"));
-  let t = createElementAndText("P", "Continue to follow the instructions from the packet labeled \"Work Instruction Assessment 1\" step #3.",
+  let t = createElementAndText("P", "Follow the Assessment #1 \"Step 4 - Assembly\" instructions.",
                                "instruction-text", infoHeading);
   t.setAttribute("style", "font-size: 22px; font-weight: bold; text-align: center");
 } // startTableAssessment1B()

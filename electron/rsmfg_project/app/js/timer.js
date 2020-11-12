@@ -53,7 +53,7 @@ function initializeClock(clocks, endtime) {
         clearInterval(timeinterval);
         timeoutHandler();
         break;
-      } else if (remainingTime.minutes < 2) {
+      } else if (remainingTime.minutes < 1) {
         clocks[c].setAttribute("style", "color: red");
       }
     }
